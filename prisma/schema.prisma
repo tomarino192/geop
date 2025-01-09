@@ -1,0 +1,59 @@
+// prisma/schema.prisma
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                  String     @id @default(auto()) @map("_id") @db.ObjectId
+  email               String     @unique
+  password            String
+  role                String     @default("GUEST")
+  failedLoginAttempts Int        @default(0)
+  accountLocked       Boolean    @default(false)
+  businesses          Business[]
+  logs                Log[]
+}
+
+model Business {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  ownerId   String    @db.ObjectId
+  owner     User      @relation(fields: [ownerId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  chatbots  Chatbot[]
+}
+
+model Chatbot {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  businessId String   @db.ObjectId
+  business   Business @relation(fields: [businessId], references: [id])
+  moduleIds  String[] @db.ObjectId
+  modules    Module[] @relation("ChatbotModules", fields: [moduleIds], references: [id])
+}
+
+model Log {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String?  @db.ObjectId
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String
+  status    String
+  timestamp DateTime @default(now())
+  details   String?
+}
+
+model Module {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  config     Json
+  chatbotIds String[]  @db.ObjectId
+  chatbots   Chatbot[] @relation("ChatbotModules", fields: [chatbotIds], references: [id])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
