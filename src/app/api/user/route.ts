@@ -21,7 +21,8 @@ export async function GET(req: NextRequest) {
       failedLoginAttempts: true,
       accountLocked: true,
       businesses: true,
-      logs: true
+      logs: true,
+      lang: true
     }
   })
   return NextResponse.json(users)
@@ -37,7 +38,7 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: "Нет доступа" }, { status: 403 })
   }
 
-  const { id, role, accountLocked } = await req.json()
+  const { id, role, accountLocked, lang } = await req.json()
 
   if (!id) {
     return NextResponse.json({ error: "ID не указан" }, { status: 400 })
@@ -58,14 +59,16 @@ export async function PATCH(req: NextRequest) {
     data: {
       ...(role && { role }),
       ...(typeof accountLocked === 'boolean' && { accountLocked }),
-      ...(accountLocked === false && { failedLoginAttempts: 0 })
+      ...(accountLocked === false && { failedLoginAttempts: 0 }),
+      ...(lang && { lang })
     },
     select: {
       id: true,
       email: true,
       role: true,
       failedLoginAttempts: true,
-      accountLocked: true
+      accountLocked: true,
+      lang: true
     }
   })
 

@@ -1,11 +1,10 @@
-// src/app/api/auth/register/route.ts
 import { NextRequest, NextResponse } from "next/server"
 import bcrypt from "bcrypt"
 import { prisma } from "@/lib/prisma"
 
 export async function POST(req: NextRequest) {
   try {
-    const { email, password } = await req.json()
+    const { email, password, lang = "ru" } = await req.json()
     const existingUser = await prisma.user.findUnique({ where: { email } })
     if (existingUser) {
       return NextResponse.json({ error: "Пользователь уже существует" }, { status: 400 })
@@ -14,7 +13,8 @@ export async function POST(req: NextRequest) {
     const newUser = await prisma.user.create({
       data: {
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        lang
       }
     })
     return NextResponse.json({ user: newUser })

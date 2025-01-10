@@ -1,4 +1,3 @@
-// src/app/api/chatbot/route.ts
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { verifyToken } from "@/lib/jwt"
@@ -10,7 +9,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Не авторизован" }, { status: 401 })
   }
 
-  // Получаем только чат-боты, принадлежащие бизнесам текущего пользователя
+  // Чат-боты бизнесов текущего пользователя
   const chatbots = await prisma.chatbot.findMany({
     where: {
       business: {
@@ -29,20 +28,49 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Не авторизован" }, { status: 401 })
   }
 
-  const { name, businessId } = await req.json()
+  // Извлекаем поля для чат-бота (включая ML, рабочие часы и т.д.)
+  const {
+    name,
+    businessId,
+    templateKey,
+    mlEnabled,
+    botWorkingDays,
+    botStartTime,
+    botEndTime,
+    botWorkSaturday,
+    botStartTimeSat,
+    botEndTimeSat,
+    botWorkSunday,
+    botStartTimeSun,
+    botEndTimeSun,
+    paymentMethods,  // опционально, если храните
+    deliveryOptions
+  } = await req.json()
 
-  // Проверяем, что бизнес принадлежит текущему пользователю
-  const business = await prisma.business.findUnique({
-    where: { id: businessId }
-  })
+  // Проверка доступа
+  const business = await prisma.business.findUnique({ where: { id: businessId } })
   if (!business || business.ownerId !== payload.userId) {
     return NextResponse.json({ error: "Нет доступа" }, { status: 403 })
   }
 
+  // Создаём чат-бот
   const newChatbot = await prisma.chatbot.create({
     data: {
       name,
-      businessId
+      businessId,
+      mlEnabled: mlEnabled || false,
+      botWorkingDays: botWorkingDays || [],
+      botStartTime,
+      botEndTime,
+      botWorkSaturday,
+      botStartTimeSat,
+      botEndTimeSat,
+      botWorkSunday,
+      botStartTimeSun,
+      botEndTimeSun,
+      paymentMethods,
+      deliveryOptions,
+      templateKey
     }
   })
   return NextResponse.json(newChatbot)
@@ -55,7 +83,27 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: "Не авторизован" }, { status: 401 })
   }
 
-  const { id, name } = await req.json()
+  const {
+    id,
+    name,
+    templateKey,
+    mlEnabled,
+    botWorkingDays,
+    botStartTime,
+    botEndTime,
+    botWorkSaturday,
+    botStartTimeSat,
+    botEndTimeSat,
+    botWorkSunday,
+    botStartTimeSun,
+    botEndTimeSun,
+    catalogType,
+    catalogLink,
+    catalogApiKey,
+    faqLink,
+    paymentMethods,
+    deliveryOptions
+  } = await req.json()
 
   // Проверяем, что чат-бот принадлежит бизнесу текущего пользователя
   const chatbot = await prisma.chatbot.findUnique({
@@ -66,9 +114,29 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: "Нет доступа" }, { status: 403 })
   }
 
+  // Обновляем
   const updated = await prisma.chatbot.update({
     where: { id },
-    data: { name }
+    data: {
+      name,
+      templateKey,
+      mlEnabled,
+      botWorkingDays: botWorkingDays || [],
+      botStartTime,
+      botEndTime,
+      botWorkSaturday,
+      botStartTimeSat,
+      botEndTimeSat,
+      botWorkSunday,
+      botStartTimeSun,
+      botEndTimeSun,
+      catalogType,
+      catalogLink,
+      catalogApiKey,
+      faqLink,
+      paymentMethods,
+      deliveryOptions
+    }
   })
   return NextResponse.json(updated)
 }
@@ -87,7 +155,7 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ error: "ID не указан" }, { status: 400 })
   }
 
-  // Проверяем, что чат-бот принадлежит бизнесу текущего пользователя
+  // Проверяем чат-бот
   const chatbot = await prisma.chatbot.findUnique({
     where: { id },
     include: { business: true }

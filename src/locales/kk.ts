@@ -1,0 +1,38 @@
+// src/locales/kk.ts
+export default {
+  common: {
+    create: "Жасау",
+    update: "Жаңарту",
+    delete: "Жою",
+    loading: "Жүктелуде...",
+    error: "Қате",
+    success: "Сәтті",
+  },
+  chatbotForm: {
+    title: "Чат-бот қосу",
+    nameLabel: "Чат-боттың атауы",
+    businessLabel: "Бизнеспен байланыстыру",
+    templateLabel: "Чат-бот шаблоны",
+    scheduleTitle: "Жұмыс кестесі",
+    paymentTitle: "Төлем әдістері",
+    deliveryTitle: "Жеткізу әдістері",
+    catalogTitle: "Тауарлар каталогу",
+    faqLabel: "Жиі қойылатын сұрақтар (FAQ)",
+    googleCatalog: "Google кестесі",
+    posifloraCatalog: "Posiflora",
+    addDelivery: "Жеткізу әдісін қосу",
+    createBot: "Чат-ботты жасау",
+    workingDays: ["Дс", "Сс", "Ср", "Бс", "Жм"],
+    saturday: "Сенбі",
+    sunday: "Жексенбі",
+  },
+  dashboard: {
+    activeBots: "Белсенді чат-боттар",
+    totalBots: "Барлығы",
+    userBotsTitle: "Сіздің чат-боттарыңыз",
+    systemBotsTitle: "Жүйедегі бар чат-боттар",
+    usersTitle: "Пайдаланушылар саны",
+    dialogsMonth: "Осы айдағы диалогтар",
+    dialogsTotal: "Барлық диалогтар",
+  },
+}

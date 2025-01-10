@@ -1,4 +1,3 @@
-// src/app/api/auth/login/route.ts
 import { NextRequest, NextResponse } from "next/server"
 import bcrypt from "bcrypt"
 import { prisma } from "@/lib/prisma"
@@ -29,6 +28,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Неверный пароль" }, { status: 401 })
     }
     const token = await signToken({ userId: user.id, role: user.role })
+    // Сброс счетчика неудачных попыток
     await prisma.user.update({
       where: { email },
       data: { failedLoginAttempts: 0 }

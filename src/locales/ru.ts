@@ -1,0 +1,39 @@
+// src/locales/ru.ts
+export default {
+  common: {
+    create: "Создать",
+    update: "Обновить",
+    delete: "Удалить",
+    loading: "Загрузка...",
+    error: "Ошибка",
+    success: "Успешно",
+  },
+  chatbotForm: {
+    title: "Добавить чат-бот",
+    nameLabel: "Название чат-бота",
+    businessLabel: "Привязать к бизнесу",
+    templateLabel: "Шаблон чат-бота",
+    scheduleTitle: "Расписание работы",
+    paymentTitle: "Способы оплаты",
+    deliveryTitle: "Способы доставки",
+    catalogTitle: "Каталог товаров",
+    faqLabel: "Часто задаваемые вопросы (FAQ)",
+    googleCatalog: "Google таблица",
+    posifloraCatalog: "Posiflora",
+    addDelivery: "Добавить способ доставки",
+    createBot: "Создать чат-бот",
+    workingDays: ["Пн", "Вт", "Ср", "Чт", "Пт"],
+    saturday: "Суббота",
+    sunday: "Воскресенье",
+  },
+  dashboard: {
+    activeBots: "Активных чат-ботов",
+    totalBots: "Всего",
+    userBotsTitle: "Ваши чат-боты",
+    systemBotsTitle: "Все чат-боты в системе",
+    usersTitle: "Пользователи",
+    dialogsMonth: "Диалогов за месяц",
+    dialogsTotal: "Всего диалогов",
+  },
+  // Что ещё можно добавить
+}
