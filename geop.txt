@@ -1,3 +1,85 @@
+// .\components.json
+--------------------------------------------
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "default",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "tailwind.config.js",
+    "css": "src/app/globals.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
+  },
+  "iconLibrary": "lucide"
+}
+// .\eslint.config.js
+--------------------------------------------
+// eslint.config.js (CommonJS формат)
+
+const { dirname } = require("path")
+const { fileURLToPath } = require("url")
+const { FlatCompat } = require("@eslint/eslintrc")
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname
+})
+
+const eslintConfig = [
+  ...compat.extends("next/core-web-vitals", "next/typescript")
+]
+
+module.exports = eslintConfig
+
+// .\geop.txt
+--------------------------------------------
+
+// .\next-env.d.ts
+--------------------------------------------
+/// <reference types="next" />
+/// <reference types="next/image-types/global" />
+
+// NOTE: This file should not be edited
+// see https://nextjs.org/docs/app/api-reference/config/typescript for more information.
+
+// .\next.config.js
+--------------------------------------------
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  experimental: {
+    appDir: true
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/auth/:path*',
+        destination: '/auth/:path*'
+      }
+    ]
+  },
+  env: {
+    AUTH0_SECRET: process.env.AUTH0_SECRET,
+    AUTH0_BASE_URL: process.env.AUTH0_BASE_URL,
+    AUTH0_ISSUER_BASE_URL: process.env.AUTH0_ISSUER_BASE_URL,
+    AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
+    AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET
+  }
+}
+
+module.exports = nextConfig
+// .\package-lock.json
+--------------------------------------------
 {
   "name": "geop",
   "version": "0.1.0",
@@ -12,7 +94,6 @@
         "@aws-sdk/client-lambda": "^3.723.0",
         "@hookform/resolvers": "^3.10.0",
         "@prisma/client": "^6.2.1",
-        "@radix-ui/react-accordion": "^1.2.2",
         "@radix-ui/react-alert-dialog": "^1.1.4",
         "@radix-ui/react-checkbox": "^1.1.3",
         "@radix-ui/react-dialog": "^1.1.4",
@@ -2303,37 +2384,6 @@
       "integrity": "sha512-SJ31y+Q/zAyShtXJc8x83i9TYdbAfHZ++tUZnvjJJqFjzsdUnKsxPL6IEtBlxKkU7yzer//GQtZSV4GbldL3YA==",
       "license": "MIT"
     },
-    "node_modules/@radix-ui/react-accordion": {
-      "version": "1.2.2",
-      "resolved": "https://registry.npmjs.org/@radix-ui/react-accordion/-/react-accordion-1.2.2.tgz",
-      "integrity": "sha512-b1oh54x4DMCdGsB4/7ahiSrViXxaBwRPotiZNnYXjLha9vfuURSAZErki6qjDoSIV0eXx5v57XnTGVtGwnfp2g==",
-      "license": "MIT",
-      "dependencies": {
-        "@radix-ui/primitive": "1.1.1",
-        "@radix-ui/react-collapsible": "1.1.2",
-        "@radix-ui/react-collection": "1.1.1",
-        "@radix-ui/react-compose-refs": "1.1.1",
-        "@radix-ui/react-context": "1.1.1",
-        "@radix-ui/react-direction": "1.1.0",
-        "@radix-ui/react-id": "1.1.0",
-        "@radix-ui/react-primitive": "2.0.1",
-        "@radix-ui/react-use-controllable-state": "1.1.0"
-      },
-      "peerDependencies": {
-        "@types/react": "*",
-        "@types/react-dom": "*",
-        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
-        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc"
-      },
-      "peerDependenciesMeta": {
-        "@types/react": {
-          "optional": true
-        },
-        "@types/react-dom": {
-          "optional": true
-        }
-      }
-    },
     "node_modules/@radix-ui/react-alert-dialog": {
       "version": "1.1.4",
       "resolved": "https://registry.npmjs.org/@radix-ui/react-alert-dialog/-/react-alert-dialog-1.1.4.tgz",
@@ -2399,36 +2449,6 @@
         "@radix-ui/react-use-controllable-state": "1.1.0",
         "@radix-ui/react-use-previous": "1.1.0",
         "@radix-ui/react-use-size": "1.1.0"
-      },
-      "peerDependencies": {
-        "@types/react": "*",
-        "@types/react-dom": "*",
-        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
-        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc"
-      },
-      "peerDependenciesMeta": {
-        "@types/react": {
-          "optional": true
-        },
-        "@types/react-dom": {
-          "optional": true
-        }
-      }
-    },
-    "node_modules/@radix-ui/react-collapsible": {
-      "version": "1.1.2",
-      "resolved": "https://registry.npmjs.org/@radix-ui/react-collapsible/-/react-collapsible-1.1.2.tgz",
-      "integrity": "sha512-PliMB63vxz7vggcyq0IxNYk8vGDrLXVWw4+W4B8YnwI1s18x7YZYqlG9PLX7XxAJUi0g2DxP4XKJMFHh/iVh9A==",
-      "license": "MIT",
-      "dependencies": {
-        "@radix-ui/primitive": "1.1.1",
-        "@radix-ui/react-compose-refs": "1.1.1",
-        "@radix-ui/react-context": "1.1.1",
-        "@radix-ui/react-id": "1.1.0",
-        "@radix-ui/react-presence": "1.1.2",
-        "@radix-ui/react-primitive": "2.0.1",
-        "@radix-ui/react-use-controllable-state": "1.1.0",
-        "@radix-ui/react-use-layout-effect": "1.1.0"
       },
       "peerDependencies": {
         "@types/react": "*",
@@ -11136,3 +11156,5553 @@
     }
   }
 }
+
+// .\package.json
+--------------------------------------------
+{
+  "name": "geop",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@auth0/nextjs-auth0": "^3.5.0",
+    "@aws-sdk/client-lambda": "^3.723.0",
+    "@hookform/resolvers": "^3.10.0",
+    "@prisma/client": "^6.2.1",
+    "@radix-ui/react-alert-dialog": "^1.1.4",
+    "@radix-ui/react-checkbox": "^1.1.3",
+    "@radix-ui/react-dialog": "^1.1.4",
+    "@radix-ui/react-dropdown-menu": "^2.1.4",
+    "@radix-ui/react-icons": "^1.3.2",
+    "@radix-ui/react-label": "^2.1.1",
+    "@radix-ui/react-menubar": "^1.1.4",
+    "@radix-ui/react-navigation-menu": "^1.2.3",
+    "@radix-ui/react-progress": "^1.1.1",
+    "@radix-ui/react-select": "^2.1.4",
+    "@radix-ui/react-separator": "^1.1.1",
+    "@radix-ui/react-slider": "^1.2.2",
+    "@radix-ui/react-slot": "^1.1.1",
+    "@radix-ui/react-switch": "^1.1.2",
+    "@radix-ui/react-tabs": "^1.1.2",
+    "@radix-ui/react-toast": "^1.2.4",
+    "@radix-ui/react-tooltip": "^1.1.6",
+    "@shadcn/ui": "^0.0.4",
+    "add": "^2.0.6",
+    "bcrypt": "^5.1.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "jose": "^5.9.6",
+    "jwt-decode": "^4.0.0",
+    "lucide-react": "^0.469.0",
+    "mongodb": "^6.12.0",
+    "next": "15.1.4",
+    "prisma": "^6.2.1",
+    "react": "^19.0.0",
+    "react-day-picker": "^9.5.0",
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.54.2",
+    "shadcn-ui": "^0.9.4",
+    "tailwind-merge": "^2.6.0",
+    "tailwindcss-animate": "^1.0.7",
+    "vaul": "^1.1.2",
+    "yarn": "^1.22.22",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9",
+    "eslint-config-next": "15.1.4",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5"
+  }
+}
+
+// .\postcss.config.js
+--------------------------------------------
+// postcss.config.js
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {}
+  }
+}
+
+// .\README.md
+--------------------------------------------
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+## Getting Started
+
+First, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+// .\tailwind.config.js
+--------------------------------------------
+// tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+    darkMode: ["class"],
+    content: [
+    "./src/app/**/*.{js,ts,jsx,tsx}",
+    "./src/components/**/*.{js,ts,jsx,tsx}"
+  ],
+  theme: {
+  	extend: {
+  		borderRadius: {
+  			lg: 'var(--radius)',
+  			md: 'calc(var(--radius) - 2px)',
+  			sm: 'calc(var(--radius) - 4px)'
+  		},
+  		colors: {
+  			background: 'hsl(var(--background))',
+  			foreground: 'hsl(var(--foreground))',
+  			card: {
+  				DEFAULT: 'hsl(var(--card))',
+  				foreground: 'hsl(var(--card-foreground))'
+  			},
+  			popover: {
+  				DEFAULT: 'hsl(var(--popover))',
+  				foreground: 'hsl(var(--popover-foreground))'
+  			},
+  			primary: {
+  				DEFAULT: 'hsl(var(--primary))',
+  				foreground: 'hsl(var(--primary-foreground))'
+  			},
+  			secondary: {
+  				DEFAULT: 'hsl(var(--secondary))',
+  				foreground: 'hsl(var(--secondary-foreground))'
+  			},
+  			muted: {
+  				DEFAULT: 'hsl(var(--muted))',
+  				foreground: 'hsl(var(--muted-foreground))'
+  			},
+  			accent: {
+  				DEFAULT: 'hsl(var(--accent))',
+  				foreground: 'hsl(var(--accent-foreground))'
+  			},
+  			destructive: {
+  				DEFAULT: 'hsl(var(--destructive))',
+  				foreground: 'hsl(var(--destructive-foreground))'
+  			},
+  			border: 'hsl(var(--border))',
+  			input: 'hsl(var(--input))',
+  			ring: 'hsl(var(--ring))',
+  			chart: {
+  				'1': 'hsl(var(--chart-1))',
+  				'2': 'hsl(var(--chart-2))',
+  				'3': 'hsl(var(--chart-3))',
+  				'4': 'hsl(var(--chart-4))',
+  				'5': 'hsl(var(--chart-5))'
+  			}
+  		}
+  	}
+  },
+  plugins: [
+    require("tailwindcss-animate")
+  ]
+}
+
+// .\tsconfig.json
+--------------------------------------------
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@/prompts/*": [
+        "./src/prompts/*"
+      ]
+    },
+    "target": "es2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "next-env.d.ts",
+    ".next/types/**/*.ts"
+, "postcss.config.js", "next.config.js", "tailwind.config.js"  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
+
+// .\prisma\prisma.txt
+--------------------------------------------
+// C:\Users\grege\Desktop\o1\geop\prisma\prisma.txt
+--------------------------------------------
+// C:\Users\grege\Desktop\o1\geop\prisma\prisma.txt
+--------------------------------------------
+
+
+// C:\Users\grege\Desktop\o1\geop\prisma\schema.prisma
+--------------------------------------------
+// prisma/schema.prisma
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                  String     @id @default(auto()) @map("_id") @db.ObjectId
+  email               String     @unique
+  password            String
+  role                String     @default("GUEST")
+  lang                String     @default("ru")
+  failedLoginAttempts Int        @default(0)
+  accountLocked       Boolean    @default(false)
+  businesses          Business[]
+  logs                Log[]
+}
+
+model Business {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  ownerId       String   @db.ObjectId
+  owner         User     @relation(fields: [ownerId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  chatbots      Chatbot[]
+  type          String?
+  catalogType   String?
+  catalogLink   String?
+  catalogApiKey String?
+  faqLink       String?
+  promoLink     String?
+  phone         String?
+  geo           String?
+  style         String?
+  targetAction  String?
+  workingDays   String[] // массив будних дней
+  startTime     String?  // "09:00"
+  endTime       String?  // "18:00"
+  workSaturday  Boolean? @default(false)
+  startTimeSat  String?
+  endTimeSat    String?
+  workSunday    Boolean? @default(false)
+  startTimeSun  String?
+  endTimeSun    String?
+}
+
+model Chatbot {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  businessId       String   @db.ObjectId
+  business         Business @relation(fields: [businessId], references: [id])
+  moduleIds        String[] @db.ObjectId
+  modules          Module[] @relation("ChatbotModules", fields: [moduleIds], references: [id])
+  mlEnabled        Boolean? @default(false)
+  paymentMethods   String[]
+  deliveryOptions  String[]
+  templateKey      String?
+  botWorkingDays   String[]
+  botStartTime     String?
+  botEndTime       String?
+  botWorkSaturday  Boolean? @default(false)
+  botStartTimeSat  String?
+  botEndTimeSat    String?
+  botWorkSunday    Boolean? @default(false)
+  botStartTimeSun  String?
+  botEndTimeSun    String?
+}
+
+
+model Log {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String?  @db.ObjectId
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String
+  status    String
+  timestamp DateTime @default(now())
+  details   String?
+}
+
+model Module {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  config     Json
+  chatbotIds String[]  @db.ObjectId
+  chatbots   Chatbot[] @relation("ChatbotModules", fields: [chatbotIds], references: [id])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+
+
+// .\prisma\schema.prisma
+--------------------------------------------
+// prisma/schema.prisma
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                  String     @id @default(auto()) @map("_id") @db.ObjectId
+  email               String     @unique
+  password            String
+  role                String     @default("GUEST")
+  lang                String     @default("ru")
+  failedLoginAttempts Int        @default(0)
+  accountLocked       Boolean    @default(false)
+  businesses          Business[]
+  logs                Log[]
+}
+
+model Business {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  ownerId       String   @db.ObjectId
+  owner         User     @relation(fields: [ownerId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  chatbots      Chatbot[]
+  type          String?
+  catalogType   String?
+  catalogLink   String?
+  catalogApiKey String?
+  faqLink       String?
+  promoLink     String?
+  phone         String?
+  geo           String?
+  style         String?
+  targetAction  String?
+  workingDays   String[] // массив будних дней
+  startTime     String?  // "09:00"
+  endTime       String?  // "18:00"
+  workSaturday  Boolean? @default(false)
+  startTimeSat  String?
+  endTimeSat    String?
+  workSunday    Boolean? @default(false)
+  startTimeSun  String?
+  endTimeSun    String?
+}
+
+model Chatbot {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  businessId       String   @db.ObjectId
+  business         Business @relation(fields: [businessId], references: [id])
+  moduleIds        String[] @db.ObjectId
+  modules          Module[] @relation("ChatbotModules", fields: [moduleIds], references: [id])
+  mlEnabled        Boolean? @default(false)
+  paymentMethods   String[]
+  deliveryOptions  String[]
+  templateKey      String?
+  botWorkingDays   String[]
+  botStartTime     String?
+  botEndTime       String?
+  botWorkSaturday  Boolean? @default(false)
+  botStartTimeSat  String?
+  botEndTimeSat    String?
+  botWorkSunday    Boolean? @default(false)
+  botStartTimeSun  String?
+  botEndTimeSun    String?
+}
+
+
+model Log {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String?  @db.ObjectId
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String
+  status    String
+  timestamp DateTime @default(now())
+  details   String?
+}
+
+model Module {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  config     Json
+  chatbotIds String[]  @db.ObjectId
+  chatbots   Chatbot[] @relation("ChatbotModules", fields: [chatbotIds], references: [id])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+// .\src\app\globals.css
+--------------------------------------------
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background-color: #f8f9fa;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+// .\src\app\layout.tsx
+--------------------------------------------
+// src/app/layout.tsx
+import { Toaster } from "@/components/ui/toaster"
+import "./globals.css"
+import { ReactNode } from "react"
+import { LocaleProvider } from "@/context/LocaleContext"
+
+export const metadata = {
+  title: "Geopard Admin Panel",
+  description: "Управление чат-ботами и бизнесами"
+}
+
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return (
+    <html lang="ru">
+      <body className="text-gray-800">
+        <LocaleProvider>
+          {children}
+          </LocaleProvider>
+        <Toaster />
+      </body>
+    </html>
+  )
+}
+
+// .\src\app\page.tsx
+--------------------------------------------
+// src/app/page.tsx
+// Просто переадресуем на страницу логина или пишем приветствие
+import { redirect } from "next/navigation"
+
+export default function Home() {
+  // Редирект на логин, чтобы пользователь сразу попадал на форму
+  redirect("/auth/login")
+  return null
+}
+
+// .\src\app\admin\layout.tsx
+--------------------------------------------
+"use client"
+
+import AdminNav from "@/components/AdminNav"
+import { ReactNode, useState, useEffect, useRef } from "react"
+import { Menu, X } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+
+export default function AdminLayout({ children }: { children: ReactNode }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(true)
+  const asideRef = useRef<HTMLElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    if (window.innerWidth < 1024) {
+      setIsMenuOpen(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      // Проверяем, что клик был не по кнопке и не по меню
+      if (
+        isMenuOpen && 
+        asideRef.current && 
+        !asideRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node) &&
+        window.innerWidth < 1024
+      ) {
+        setIsMenuOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [isMenuOpen])
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen)
+  }
+
+  return (
+    <div className="min-h-screen flex relative bg-gray-100">
+      {/* Оверлей */}
+      <div 
+        className={cn(
+          "fixed inset-0 bg-black/50 lg:hidden z-30",
+          "transition-opacity duration-200",
+          isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        )}
+        onClick={() => setIsMenuOpen(false)}
+      />
+
+      {/* Кнопка меню */}
+      <Button
+        ref={buttonRef}
+        variant="secondary"
+        size="icon"
+        className={cn(
+          "fixed lg:hidden z-50",
+          "top-4 transition-all duration-300",
+          isMenuOpen ? "left-[248px]" : "left-4",
+          "bg-white shadow-md hover:bg-gray-100",
+          "h-10 w-10"
+        )}
+        onClick={toggleMenu} // Используем единую функцию для переключения
+      >
+        {isMenuOpen ? (
+          <X className="h-5 w-5 text-gray-700" />
+        ) : (
+          <Menu className="h-5 w-5 text-gray-700" />
+        )}
+      </Button>
+
+      {/* Боковое меню */}
+      <aside 
+        ref={asideRef}
+        className={cn(
+          "fixed lg:sticky top-0 left-0 h-screen",
+          "bg-gray-800 text-white",
+          "transition-transform duration-300 ease-in-out lg:transition-none",
+          "border-r border-gray-700",
+          "shadow-lg z-40",
+          "w-64",
+          "transform lg:transform-none",
+          isMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        )}
+      >
+        <AdminNav isCollapsed={false} />
+      </aside>
+
+      {/* Основной контент */}
+      <main className={cn(
+        "flex-1 min-w-0",
+        "transition-all duration-300 ease-in-out",
+        "p-4 lg:p-6",
+        "pt-20 lg:pt-6",
+        "relative"
+      )}>
+        <div className="max-w-7xl mx-auto">
+          {children}
+        </div>
+      </main>
+    </div>
+  )
+}
+// .\src\app\admin\businesses\page.tsx
+--------------------------------------------
+// src/app/admin/businesses/page.tsx
+"use client"
+
+import { useState, useEffect } from "react"
+import BusinessForm from "@/components/BusinessForm"
+import { Edit, Trash2 } from "lucide-react"
+
+export default function BusinessesPage() {
+  const [businesses, setBusinesses] = useState<any[]>([])
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [editName, setEditName] = useState("")
+
+  const fetchData = async () => {
+    const res = await fetch("/api/business", {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    })
+    const data = await res.json()
+    setBusinesses(data)
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  // Редактирование
+  const handleEdit = (biz: any) => {
+    setEditingId(biz.id)
+    setEditName(biz.name)
+  }
+  const saveEdit = async (id: string) => {
+    const res = await fetch("/api/business", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      },
+      body: JSON.stringify({ id, name: editName })
+    })
+    const data = await res.json()
+    if (data.error) {
+      alert(data.error)
+    }
+    setEditingId(null)
+    setEditName("")
+    fetchData()
+  }
+
+  // Удаление
+  const handleDelete = async (id: string) => {
+    if (!confirm("Удалить этот бизнес?")) return
+    const res = await fetch(`/api/business?id=${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    })
+    const data = await res.json()
+    if (data.error) {
+      alert(data.error)
+    } else {
+      alert("Бизнес удалён")
+    }
+    fetchData()
+  }
+
+  return (
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold">Список бизнесов</h2>
+      <BusinessForm onCreated={fetchData} />
+
+      {businesses.map((biz) => (
+        <div key={biz.id} className="p-4 bg-white shadow rounded mb-2">
+          {editingId === biz.id ? (
+            <div className="flex items-center space-x-2">
+              <input
+                className="border p-2 rounded"
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+              />
+              <button
+                onClick={() => saveEdit(biz.id)}
+                className="bg-blue-500 text-white px-2 py-1 rounded"
+              >
+                Сохранить
+              </button>
+              <button
+                onClick={() => {
+                  setEditingId(null)
+                  setEditName("")
+                }}
+                className="bg-gray-300 text-gray-700 px-2 py-1 rounded"
+              >
+                Отмена
+              </button>
+            </div>
+          ) : (
+            <>
+              <p className="font-semibold">{biz.name}</p>
+              <p className="text-sm text-gray-600">ID: {biz.id}</p>
+              <p className="text-sm text-gray-500">
+                Владелец бизнеса: {biz.owner?.email || "(не найден)"}
+              </p>
+              <div className="flex items-center space-x-4 mt-2">
+                <button
+                  onClick={() => handleEdit(biz)}
+                  className="text-blue-600 flex items-center space-x-1"
+                >
+                  <Edit size={16} />
+                  <span>Редактировать</span>
+                </button>
+                <button
+                  onClick={() => handleDelete(biz.id)}
+                  className="text-red-500 flex items-center space-x-1"
+                >
+                  <Trash2 size={16} />
+                  <span>Удалить</span>
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+// .\src\app\admin\chatbots\page.tsx
+--------------------------------------------
+"use client"
+
+import { useState, useEffect } from "react"
+import { Edit, Trash2 } from "lucide-react"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { useToast } from "@/hooks/use-toast"
+import ChatbotForm from "@/components/ChatbotForm"
+import "@/locales/ru"
+import "@/locales/kk"
+import "@/locales/en"
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
+export default function ChatbotsPage() {
+  const { toast } = useToast()
+  const [chatbots, setChatbots] = useState<any[]>([])
+  const [businesses, setBusinesses] = useState<any[]>([])
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [editName, setEditName] = useState("")
+  const [isLoading, setIsLoading] = useState(true)
+
+  const fetchBusinesses = async () => {
+    try {
+      const res = await fetch("/api/business", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      })
+      const data = await res.json()
+      if (data.error) {
+        toast({
+          variant: "destructive",
+          title: "Ошибка",
+          description: "Не удалось загрузить список бизнесов"
+        })
+      } else {
+        setBusinesses(data)
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Ошибка",
+        description: "Произошла ошибка при загрузке бизнесов"
+      })
+    }
+  }
+
+  const fetchChatbots = async () => {
+    try {
+      const res = await fetch("/api/chatbot", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      })
+      const data = await res.json()
+      if (data.error) {
+        toast({
+          variant: "destructive",
+          title: "Ошибка",
+          description: "Не удалось загрузить список чат-ботов"
+        })
+      } else {
+        setChatbots(data)
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Ошибка",
+        description: "Произошла ошибка при загрузке чат-ботов"
+      })
+    }
+  }
+
+  const fetchData = async () => {
+    setIsLoading(true)
+    await Promise.all([fetchBusinesses(), fetchChatbots()])
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const handleEdit = (bot: any) => {
+    setEditingId(bot.id)
+    setEditName(bot.name)
+  }
+
+  const saveEdit = async (id: string) => {
+    try {
+      const res = await fetch("/api/chatbot", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify({ id, name: editName })
+      })
+      const data = await res.json()
+      
+      if (data.error) {
+        toast({
+          variant: "destructive",
+          title: "Ошибка",
+          description: data.error
+        })
+      } else {
+        toast({
+          title: "Успешно",
+          description: "Чат-бот обновлен"
+        })
+        setEditingId(null)
+        setEditName("")
+        fetchChatbots()
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Ошибка",
+        description: "Произошла ошибка при обновлении чат-бота"
+      })
+    }
+  }
+
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await fetch(`/api/chatbot?id=${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      })
+      const data = await res.json()
+      
+      if (data.error) {
+        toast({
+          variant: "destructive",
+          title: "Ошибка",
+          description: data.error
+        })
+      } else {
+        toast({
+          title: "Успешно",
+          description: "Чат-бот удален"
+        })
+        fetchChatbots()
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Ошибка",
+        description: "Произошла ошибка при удалении чат-бота"
+      })
+    }
+  }
+
+  if (isLoading) {
+    return <div>Загрузка...</div>
+  }
+
+  return (
+    <div className="space-y-6">
+      <ChatbotForm 
+        onCreated={fetchChatbots}
+        businesses={businesses}
+      />
+
+      <div className="space-y-4">
+        <h2 className="text-2xl font-bold">Список чат-ботов</h2>
+        
+        {chatbots.map((bot) => (
+          <Card key={bot.id}>
+            <CardContent className="pt-6">
+              {editingId === bot.id ? (
+                <div className="flex items-center space-x-2">
+                  <Input
+                    value={editName}
+                    onChange={(e) => setEditName(e.target.value)}
+                    className="max-w-sm"
+                  />
+                  <Button variant="default" onClick={() => saveEdit(bot.id)}>
+                    Сохранить
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setEditingId(null)
+                      setEditName("")
+                    }}
+                  >
+                    Отмена
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  <div className="space-y-2">
+                    <h3 className="font-semibold">{bot.name}</h3>
+                    <p className="text-sm text-muted-foreground">ID: {bot.id}</p>
+                  </div>
+                  <div className="flex items-center space-x-4 mt-4">
+                    <Button variant="outline" onClick={() => handleEdit(bot)}>
+                      <Edit className="w-4 h-4 mr-2" />
+                      Редактировать
+                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="destructive">
+                          <Trash2 className="w-4 h-4 mr-2" />
+                          Удалить
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Подтверждение удаления</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Вы уверены, что хотите удалить этого чат-бота? Это действие необратимо.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Отмена</AlertDialogCancel>
+                          <AlertDialogAction onClick={() => handleDelete(bot.id)}>
+                            Удалить
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
+                </>
+              )}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  )
+}
+// .\src\app\admin\dashboard\page.tsx
+--------------------------------------------
+// src/app/admin/dashboard/page.tsx
+"use client"
+
+import { useEffect, useState } from "react"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { useLocale } from "@/context/LocaleContext"
+import { Activity, Bot, Users } from "lucide-react" // пример красивых иконок
+import { Separator } from "@/components/ui/separator"
+
+export default function DashboardPage() {
+  const { t } = useLocale()
+
+  const [activeUserBots, setActiveUserBots] = useState<number>(0)
+  const [totalUserBots, setTotalUserBots] = useState<number>(0)
+
+  const [totalBotsSystem, setTotalBotsSystem] = useState<number>(0)
+  const [totalUsers, setTotalUsers] = useState<number>(0)
+  const [dialogsMonth, setDialogsMonth] = useState<number>(0)
+  const [dialogsTotal, setDialogsTotal] = useState<number>(0)
+
+  useEffect(() => {
+    // Получаем ботов текущего юзера
+    fetch("/api/user-bots", {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // data = [{ id, name, active: boolean }, ...]
+        const activeCount = data.filter((bot: any) => bot.active).length
+        setActiveUserBots(activeCount)
+        setTotalUserBots(data.length)
+      })
+      .catch(() => {})
+
+    // Получаем глобальную статистику
+    fetch("/api/stats", {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // data = { totalBots, totalUsers, dialogsMonth, dialogsTotal }
+        setTotalBotsSystem(data.totalBots)
+        setTotalUsers(data.totalUsers)
+        setDialogsMonth(data.dialogsMonth)
+        setDialogsTotal(data.dialogsTotal)
+      })
+      .catch(() => {})
+  }, [])
+
+  return (
+    <div className="space-y-6 p-4">
+      <h2 className="text-2xl font-bold">{t("dashboard.userBotsTitle")}</h2>
+      <div className="grid grid-cols-2 gap-4">
+        {/* Активные / Всего у пользователя */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Bot className="w-5 h-5" />
+              <span>
+                {t("dashboard.activeBots")}: {activeUserBots} / {t("dashboard.totalBots")} : {totalUserBots}
+              </span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">
+              Здесь можно вывести более детальную инфу о чат-ботах юзера
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Separator />
+
+      <h2 className="text-2xl font-bold">{t("dashboard.systemBotsTitle")}</h2>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {/* Общее кол-во чат-ботов в системе */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Bot className="w-5 h-5" />
+              <span>{t("dashboard.systemBotsTitle")}</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-2xl font-bold">{totalBotsSystem}</p>
+          </CardContent>
+        </Card>
+
+        {/* Общее кол-во пользователей */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Users className="w-5 h-5" />
+              <span>{t("dashboard.usersTitle")}</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-2xl font-bold">{totalUsers}</p>
+          </CardContent>
+        </Card>
+
+        {/* Диалогов за месяц */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Activity className="w-5 h-5" />
+              <span>{t("dashboard.dialogsMonth")}</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-2xl font-bold">{dialogsMonth}</p>
+          </CardContent>
+        </Card>
+
+        {/* Всего диалогов */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Activity className="w-5 h-5" />
+              <span>{t("dashboard.dialogsTotal")}</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-2xl font-bold">{dialogsTotal}</p>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  )
+}
+
+// .\src\app\admin\logs\page.tsx
+--------------------------------------------
+"use client"
+
+import { useState, useEffect } from "react"
+import { Card, CardContent } from "@/components/ui/card"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { AlertCircle } from "lucide-react"
+
+export default function LogsPage() {
+  const [logs, setLogs] = useState<any[]>([])
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await fetch("/api/log", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      })
+      const data = await res.json()
+
+      if (data.error) {
+        setError(data.error)
+        setLogs([])
+      } 
+      else if (Array.isArray(data)) {
+        setError(null)
+        setLogs(data)
+      } 
+      else {
+        setError("Неизвестный ответ от сервера")
+        setLogs([])
+      }
+    }
+    fetchData()
+  }, [])
+
+  if (error) {
+    return (
+      <div className="space-y-4">
+        <h2 className="text-2xl font-bold">Логи</h2>
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold">Логи</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {logs.map((log) => (
+          <Card key={log.id}>
+            <CardContent className="pt-6">
+              <div className="space-y-2">
+                <div className="flex justify-between items-start">
+                  <p><span className="font-medium">Action:</span> {log.action}</p>
+                  <time className="text-sm text-muted-foreground">{log.timestamp}</time>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  <span className="font-medium">Пользователь:</span> {log.user?.email || "N/A"}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  )
+}
+// .\src\app\admin\modules\page.tsx
+--------------------------------------------
+"use client"
+
+import { useState, useEffect } from "react"
+import { Edit, Trash2 } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import ModuleForm from "@/components/ModuleForm"
+
+export default function ModulesPage() {
+  const [modules, setModules] = useState<any[]>([])
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [editName, setEditName] = useState("")
+
+  const fetchData = async () => {
+    const res = await fetch("/api/module", {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    })
+    const data = await res.json()
+    setModules(data)
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const handleEdit = (mod: any) => {
+    setEditingId(mod.id)
+    setEditName(mod.name)
+  }
+
+  const saveEdit = async (id: string) => {
+    const res = await fetch("/api/module", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      },
+      body: JSON.stringify({ id, name: editName })
+    })
+    const data = await res.json()
+    if (data.error) {
+      alert(data.error)
+    }
+    setEditingId(null)
+    setEditName("")
+    fetchData()
+  }
+
+  const handleDelete = async (id: string) => {
+    const res = await fetch(`/api/module?id=${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    })
+    const data = await res.json()
+    if (data.error) {
+      alert(data.error)
+    } else {
+      alert("Модуль удалён")
+    }
+    fetchData()
+  }
+
+  return (
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold mb-4">Модули</h2>
+      <ModuleForm onCreated={fetchData} />
+
+      {modules.map((mod) => (
+        <Card key={mod.id} className="mb-2">
+          <CardContent className="pt-6">
+            {editingId === mod.id ? (
+              <div className="flex items-center space-x-2">
+                <Input
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  className="max-w-sm"
+                />
+                <Button variant="default" onClick={() => saveEdit(mod.id)}>
+                  Сохранить
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setEditingId(null)
+                    setEditName("")
+                  }}
+                >
+                  Отмена
+                </Button>
+              </div>
+            ) : (
+              <>
+                <div className="space-y-2">
+                  <h3 className="font-semibold">{mod.name}</h3>
+                  <p className="text-sm text-muted-foreground">ID: {mod.id}</p>
+                </div>
+                <div className="flex items-center space-x-2 mt-4">
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    onClick={() => handleEdit(mod)}
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button 
+                        variant="ghost" 
+                        size="icon"
+                        className="text-destructive hover:text-destructive"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Подтверждение удаления</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Вы уверены, что хотите удалить этот модуль? Это действие необратимо.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Отмена</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => handleDelete(mod.id)}>
+                          Удалить
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              </>
+            )}
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  )
+}
+// .\src\app\admin\users\page.tsx
+--------------------------------------------
+"use client"
+
+import { useState, useEffect } from "react"
+import { Edit, Trash2, Mail, User, Building2, Globe, ArrowUpDown, Shield } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { useToast } from "@/hooks/use-toast"
+import { Switch } from "@/components/ui/switch"
+import {
+ Select,
+ SelectContent,
+ SelectItem,
+ SelectTrigger,
+ SelectValue,
+} from "@/components/ui/select"
+import {
+ AlertDialog,
+ AlertDialogAction,
+ AlertDialogCancel,
+ AlertDialogContent,
+ AlertDialogDescription,
+ AlertDialogFooter,
+ AlertDialogHeader,
+ AlertDialogTitle,
+ AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+
+type SortField = "id" | "email" | "role"
+type SortOrder = "asc" | "desc"
+
+export default function UsersPage() {
+ const { toast } = useToast()
+ const [users, setUsers] = useState<any[]>([])
+ const [filteredUsers, setFilteredUsers] = useState<any[]>([])
+ const [error, setError] = useState<string | null>(null)
+ const [editingId, setEditingId] = useState<string | null>(null)
+ const [editRole, setEditRole] = useState("")
+ const [editLocked, setEditLocked] = useState(false)
+ const [editLang, setEditLang] = useState("")
+ const [searchEmail, setSearchEmail] = useState("")
+ const [sortField, setSortField] = useState<SortField>("id")
+ const [sortOrder, setSortOrder] = useState<SortOrder>("asc")
+
+ const fetchData = async () => {
+   const res = await fetch("/api/user", {
+     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+   })
+   const data = await res.json()
+
+   if (data.error) {
+     setError(data.error)
+     setUsers([])
+   } else if (Array.isArray(data)) {
+     setError(null)
+     setUsers(data)
+     setFilteredUsers(data)
+   } else {
+     setError("Неизвестный ответ от сервера")
+     setUsers([])
+   }
+ }
+
+ useEffect(() => {
+   fetchData()
+ }, [])
+
+ useEffect(() => {
+   let result = [...users]
+   
+   if (searchEmail) {
+     result = result.filter(user => 
+       user.email.toLowerCase().includes(searchEmail.toLowerCase())
+     )
+   }
+   
+   result.sort((a, b) => {
+     if (sortOrder === "asc") {
+       return a[sortField] > b[sortField] ? 1 : -1
+     } else {
+       return a[sortField] < b[sortField] ? 1 : -1
+     }
+   })
+
+   setFilteredUsers(result)
+ }, [users, searchEmail, sortField, sortOrder])
+
+ const toggleSort = (field: SortField) => {
+   if (sortField === field) {
+     setSortOrder(prev => prev === "asc" ? "desc" : "asc")
+   } else {
+     setSortField(field)
+     setSortOrder("asc")
+   }
+ }
+
+ const handleEdit = (user: any) => {
+   setEditingId(user.id)
+   setEditRole(user.role)
+   setEditLocked(user.accountLocked)
+   setEditLang(user.lang || '')
+ }
+
+ const saveEdit = async (id: string) => {
+   const res = await fetch("/api/user", {
+     method: "PATCH",
+     headers: {
+       "Content-Type": "application/json",
+       Authorization: `Bearer ${localStorage.getItem("token")}`
+     },
+     body: JSON.stringify({ 
+       id,
+       role: editRole,
+       accountLocked: editLocked,
+       lang: editLang 
+     })
+   })
+   const data = await res.json()
+   if (data.error) {
+     toast({
+       variant: "destructive",
+       title: "Ошибка",
+       description: data.error
+     })
+   } else {
+     toast({
+       title: "Успех",
+       description: "Данные пользователя обновлены"
+     })
+   }
+   setEditingId(null)
+   setEditRole("")
+   setEditLocked(false)
+   setEditLang("")
+   fetchData()
+ }
+
+ const handleDelete = async (id: string) => {
+   const res = await fetch(`/api/user?id=${id}`, {
+     method: "DELETE",
+     headers: {
+       Authorization: `Bearer ${localStorage.getItem("token")}`
+     }
+   })
+   const data = await res.json()
+   
+   if (data.error) {
+     toast({
+       variant: "destructive",
+       title: "Ошибка",
+       description: data.error
+     })
+   } else {
+     toast({
+       title: "Успех",
+       description: data.message || "Пользователь удалён"
+     })
+     fetchData()
+   }
+ }
+
+ if (error) {
+   return (
+     <div className="space-y-4">
+       <h2 className="text-2xl font-bold">Пользователи</h2>
+       <Alert variant="destructive">
+         <AlertDescription>{error}</AlertDescription>
+       </Alert>
+     </div>
+   )
+ }
+
+ return (
+   <div className="space-y-4">
+     <h2 className="text-2xl font-bold">Пользователи</h2>
+     
+     <div className="flex flex-col sm:flex-row gap-4 mb-4">
+       <div className="relative flex-1">
+         <Mail className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+         <Input
+           placeholder="Поиск по email..."
+           value={searchEmail}
+           onChange={(e) => setSearchEmail(e.target.value)}
+           className="pl-8"
+         />
+       </div>
+       <div className="flex gap-2">
+         {(["id", "email", "role"] as SortField[]).map((field) => (
+           <Button
+             key={field}
+             variant="outline"
+             size="sm"
+             onClick={() => toggleSort(field)}
+             className="flex items-center gap-1"
+           >
+             {field}
+             {sortField === field && (
+               <ArrowUpDown className="h-4 w-4" />
+             )}
+           </Button>
+         ))}
+       </div>
+     </div>
+
+     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+       {filteredUsers.map((user) => (
+         <Card key={user.id}>
+           <CardContent className="pt-6">
+             {editingId === user.id ? (
+               <div className="space-y-4">
+                 <div className="space-y-2">
+                   <Label className="flex items-center gap-2">
+                     <Mail className="h-4 w-4" />
+                     Email: {user.email}
+                   </Label>
+                 </div>
+                 <div className="space-y-2">
+                   <Label htmlFor="role" className="flex items-center gap-2">
+                     <Shield className="h-4 w-4" />
+                     Роль:
+                   </Label>
+                   <Select value={editRole} onValueChange={setEditRole}>
+                     <SelectTrigger>
+                       <SelectValue placeholder="Выберите роль" />
+                     </SelectTrigger>
+                     <SelectContent>
+                       <SelectItem value="USER">User</SelectItem>
+                       <SelectItem value="ADMIN">Admin</SelectItem>
+                     </SelectContent>
+                   </Select>
+                 </div>
+                 <div className="flex items-center space-x-2">
+                   <Switch
+                     id="locked"
+                     checked={editLocked}
+                     onCheckedChange={setEditLocked}
+                   />
+                   <Label htmlFor="locked">Аккаунт заблокирован</Label>
+                 </div>
+                 <div className="space-y-2">
+                   <Label htmlFor="lang" className="flex items-center gap-2">
+                     <Globe className="h-4 w-4" />
+                     Язык:
+                   </Label>
+                   <Select value={editLang} onValueChange={setEditLang}>
+                     <SelectTrigger>
+                       <SelectValue placeholder="Выберите язык" />
+                     </SelectTrigger>
+                     <SelectContent>
+                       <SelectItem value="ru">Русский</SelectItem>
+                       <SelectItem value="kk">Казахский</SelectItem>
+                       <SelectItem value="en">English</SelectItem>
+                     </SelectContent>
+                   </Select>
+                 </div>
+                 <div className="flex space-x-2">
+                   <Button onClick={() => saveEdit(user.id)}>
+                     Сохранить
+                   </Button>
+                   <Button
+                     variant="outline"
+                     onClick={() => {
+                       setEditingId(null)
+                       setEditRole("")
+                       setEditLocked(false)
+                       setEditLang("")
+                     }}
+                   >
+                     Отмена
+                   </Button>
+                 </div>
+               </div>
+             ) : (
+               <>
+                 <div className="space-y-2">
+                   <p className="flex items-center gap-2">
+                     <Mail className="h-4 w-4" />
+                     <span className="font-medium">Email:</span> {user.email}
+                   </p>
+                   <p className="flex items-center gap-2">
+                     <Shield className="h-4 w-4" />
+                     <span className="font-medium">Роль:</span> {user.role}
+                   </p>
+                   <p className="flex items-center gap-2">
+                     <Globe className="h-4 w-4" />
+                     <span className="font-medium">Язык:</span> {user.lang || 'Не указан'}
+                   </p>
+                   <p className="flex items-center gap-2">
+                     <User className="h-4 w-4" />
+                     <span className="font-medium">Статус:</span>{" "}
+                     {user.accountLocked ? "Заблокирован" : "Активен"}
+                   </p>
+                   
+                   {user.businesses && user.businesses.length > 0 && (
+                     <div className="mt-4">
+                       <p className="font-medium flex items-center gap-2 mb-2">
+                         <Building2 className="h-4 w-4" />
+                         Бизнесы:
+                       </p>
+                       <div className="pl-6 space-y-1">
+                         {user.businesses.map((business: any) => (
+                           <p key={business.id} className="text-sm">
+                             • {business.name}
+                           </p>
+                         ))}
+                       </div>
+                     </div>
+                   )}
+                 </div>
+                 <div className="flex items-center space-x-2 mt-4">
+                   <Button 
+                     variant="ghost" 
+                     size="icon"
+                     onClick={() => handleEdit(user)}
+                     title="Редактировать"
+                   >
+                     <Edit className="h-4 w-4" />
+                   </Button>
+                   
+                   <AlertDialog>
+                     <AlertDialogTrigger asChild>
+                       <Button 
+                         variant="ghost" 
+                         size="icon"
+                         className="text-destructive hover:text-destructive"
+                       >
+                         <Trash2 className="h-4 w-4" />
+                       </Button>
+                     </AlertDialogTrigger>
+                     <AlertDialogContent>
+                       <AlertDialogHeader>
+                         <AlertDialogTitle>Подтверждение удаления</AlertDialogTitle>
+                         <AlertDialogDescription>
+                           Вы уверены, что хотите удалить этого пользователя? Это действие необратимо.
+                         </AlertDialogDescription>
+                       </AlertDialogHeader>
+                       <AlertDialogFooter>
+                         <AlertDialogCancel>Отмена</AlertDialogCancel>
+                         <AlertDialogAction 
+                           onClick={() => handleDelete(user.id)}
+                         >
+                           Удалить
+                         </AlertDialogAction>
+                       </AlertDialogFooter>
+                     </AlertDialogContent>
+                   </AlertDialog>
+                 </div>
+               </>
+             )}
+           </CardContent>
+         </Card>
+       ))}
+     </div>
+   </div>
+ )
+}
+// .\src\app\api\auth\login\route.ts
+--------------------------------------------
+import { NextRequest, NextResponse } from "next/server"
+import bcrypt from "bcrypt"
+import { prisma } from "@/lib/prisma"
+import { signToken } from "@/lib/jwt"
+
+export async function POST(req: NextRequest) {
+  try {
+    const { email, password } = await req.json()
+    const user = await prisma.user.findUnique({ where: { email } })
+    if (!user) {
+      return NextResponse.json({ error: "Пользователь не найден" }, { status: 404 })
+    }
+    if (user.accountLocked) {
+      return NextResponse.json({ error: "Аккаунт заблокирован" }, { status: 403 })
+    }
+    const isMatch = await bcrypt.compare(password, user.password)
+    if (!isMatch) {
+      await prisma.user.update({
+        where: { email },
+        data: { failedLoginAttempts: user.failedLoginAttempts + 1 }
+      })
+      if (user.failedLoginAttempts + 1 >= 3) {
+        await prisma.user.update({
+          where: { email },
+          data: { accountLocked: true }
+        })
+      }
+      return NextResponse.json({ error: "Неверный пароль" }, { status: 401 })
+    }
+    const token = await signToken({ userId: user.id, role: user.role })
+    // Сброс счетчика неудачных попыток
+    await prisma.user.update({
+      where: { email },
+      data: { failedLoginAttempts: 0 }
+    })
+    return NextResponse.json({ token, user })
+  } catch (err) {
+    return NextResponse.json({ error: "Ошибка при входе" }, { status: 500 })
+  }
+}
+
+// .\src\app\api\auth\register\route.ts
+--------------------------------------------
+import { NextRequest, NextResponse } from "next/server"
+import bcrypt from "bcrypt"
+import { prisma } from "@/lib/prisma"
+
+export async function POST(req: NextRequest) {
+  try {
+    const { email, password, lang = "ru" } = await req.json()
+    const existingUser = await prisma.user.findUnique({ where: { email } })
+    if (existingUser) {
+      return NextResponse.json({ error: "Пользователь уже существует" }, { status: 400 })
+    }
+    const hashedPassword = await bcrypt.hash(password, 10)
+    const newUser = await prisma.user.create({
+      data: {
+        email,
+        password: hashedPassword,
+        lang
+      }
+    })
+    return NextResponse.json({ user: newUser })
+  } catch (err) {
+    return NextResponse.json({ error: "Ошибка при регистрации" }, { status: 500 })
+  }
+}
+
+// .\src\app\api\business\route.ts
+--------------------------------------------
+import { NextRequest, NextResponse } from "next/server"
+import { prisma } from "@/lib/prisma"
+import { verifyToken } from "@/lib/jwt"
+
+export async function GET(req: NextRequest) {
+  const token = req.headers.get("Authorization")?.replace("Bearer ", "") || ""
+  const payload = await verifyToken(token) as { userId: string }
+  if (!payload) {
+    return NextResponse.json({ error: "Не авторизован" }, { status: 401 })
+  }
+  // Находим все бизнесы текущего пользователя
+  const businesses = await prisma.business.findMany({
+    where: { ownerId: payload.userId },
+    include: { owner: true, chatbots: true }
+  })
+  return NextResponse.json(businesses)
+}
+
+// GET /api/business/:id (для получения одного бизнеса)
+// Можно оформить как отдельный файл /src/app/api/business/[id]/route.ts
+// но если нужно в одном — можно условно парсить URL.
+// Ниже — пример для отдельного route. 
+// Если не нужно, уберите этот комментарий.
+
+/*
+export async function GET_ONE(req: NextRequest, { params }: { params: { id: string } }) {
+  // Пример: /api/business/abc123
+  const token = req.headers.get("Authorization")?.replace("Bearer ", "") || ""
+  const payload = await verifyToken(token) as { userId: string }
+  if (!payload) {
+    return NextResponse.json({ error: "Не авторизован" }, { status: 401 })
+  }
+  const { id } = params
+  const biz = await prisma.business.findUnique({ where: { id } })
+  if (!biz || biz.ownerId !== payload.userId) {
+    return NextResponse.json({ error: "Нет доступа или бизнес не найден" }, { status: 403 })
+  }
+  return NextResponse.json(biz)
+}
+*/
+
+export async function POST(req: NextRequest) {
+  const token = req.headers.get("Authorization")?.replace("Bearer ", "") || ""
+  const payload = await verifyToken(token) as { userId: string }
+
+  if (!payload) {
+    return NextResponse.json({ error: "Не авторизован" }, { status: 401 })
+  }
+  // Забираем все поля, которые можем записать в бизнес
+  const {
+    name,
+    type,
+    promoLink,
+    phone,
+    geo,
+    style,
+    targetAction,
+    workingDays,
+    startTime,
+    endTime,
+    workSaturday,
+    startTimeSat,
+    endTimeSat,
+    workSunday,
+    startTimeSun,
+    endTimeSun
+  } = await req.json()
+
+  const newBusiness = await prisma.business.create({
+    data: {
+      name,
+      ownerId: payload.userId,
+      type,
+      promoLink,
+      phone,
+      geo,
+      style,
+      targetAction,
+      workingDays: workingDays || [],
+      startTime,
+      endTime,
+      workSaturday,
+      startTimeSat,
+      endTimeSat,
+      workSunday,
+      startTimeSun,
+      endTimeSun
+    }
+  })
+  return NextResponse.json(newBusiness)
+}
+
+// PATCH (обновление)
+export async function PATCH(req: NextRequest) {
+  const token = req.headers.get("Authorization")?.replace("Bearer ", "") || ""
+  const payload = await verifyToken(token)
+  if (!payload) {
+    return NextResponse.json({ error: "Не авторизован" }, { status: 401 })
+  }
+
+  const {
+    id,
+    name,
+    type,
+    promoLink,
+    phone,
+    geo,
+    style,
+    targetAction,
+    workingDays,
+    startTime,
+    endTime,
+    workSaturday,
+    startTimeSat,
+    endTimeSat,
+    workSunday,
+    startTimeSun,
+    endTimeSun
+  } = await req.json()
+
+  // Проверка прав
+  const biz = await prisma.business.findUnique({ where: { id } })
+  if (!biz || biz.ownerId !== payload.userId) {
+    return NextResponse.json({ error: "Нет доступа" }, { status: 403 })
+  }
+
+  const updated = await prisma.business.update({
+    where: { id },
+    data: {
+      name,
+      type,
+      promoLink,
+      phone,
+      geo,
+      style,
+      targetAction,
+      workingDays: workingDays || [],
+      startTime,
+      endTime,
+      workSaturday,
+      startTimeSat,
+      endTimeSat,
+      workSunday,
+      startTimeSun,
+      endTimeSun
+    }
+  })
+  return NextResponse.json(updated)
+}
+
+// DELETE
+export async function DELETE(req: NextRequest) {
+  const token = req.headers.get("Authorization")?.replace("Bearer ", "") || ""
+  const payload = await verifyToken(token)
+  if (!payload) {
+    return NextResponse.json({ error: "Не авторизован" }, { status: 401 })
+  }
+
+  const { searchParams } = new URL(req.url)
+  const id = searchParams.get("id")
+
+  if (!id) {
+    return NextResponse.json({ error: "ID не указан" }, { status: 400 })
+  }
+
+  const biz = await prisma.business.findUnique({ where: { id } })
+  if (!biz || biz.ownerId !== payload.userId) {
+    return NextResponse.json({ error: "Нет доступа" }, { status: 403 })
+  }
+
+  await prisma.business.delete({ where: { id } })
+  return NextResponse.json({ message: "Бизнес удалён" })
+}
+
+// .\src\app\api\business\[id]\route.ts
+--------------------------------------------
+import { NextRequest, NextResponse } from "next/server"
+import { prisma } from "@/lib/prisma"
+import { verifyToken } from "@/lib/jwt"
+
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+  const token = req.headers.get("Authorization")?.replace("Bearer ", "") || ""
+  const payload = await verifyToken(token)
+  if (!payload) {
+    return NextResponse.json({ error: "Не авторизован" }, { status: 401 })
+  }
+  const { id } = params
+  const biz = await prisma.business.findUnique({ where: { id } })
+  if (!biz || biz.ownerId !== payload.userId) {
+    return NextResponse.json({ error: "Нет доступа или бизнес не найден" }, { status: 403 })
+  }
+  return NextResponse.json(biz)
+}
+
+// .\src\app\api\chatbot\route.ts
+--------------------------------------------
+import { NextRequest, NextResponse } from "next/server"
+import { prisma } from "@/lib/prisma"
+import { verifyToken } from "@/lib/jwt"
+
+export async function GET(req: NextRequest) {
+  const token = req.headers.get("Authorization")?.replace("Bearer ", "") || ""
+  const payload = await verifyToken(token)
+  if (!payload) {
+    return NextResponse.json({ error: "Не авторизован" }, { status: 401 })
+  }
+
+  // Чат-боты бизнесов текущего пользователя
+  const chatbots = await prisma.chatbot.findMany({
+    where: {
+      business: {
+        ownerId: payload.userId
+      }
+    },
+    include: { business: true, modules: true }
+  })
+  return NextResponse.json(chatbots)
+}
+
+export async function POST(req: NextRequest) {
+  const token = req.headers.get("Authorization")?.replace("Bearer ", "") || ""
+  const payload = await verifyToken(token)
+  if (!payload) {
+    return NextResponse.json({ error: "Не авторизован" }, { status: 401 })
+  }
+
+  // Извлекаем поля для чат-бота (включая ML, рабочие часы и т.д.)
+  const {
+    name,
+    businessId,
+    templateKey,
+    mlEnabled,
+    botWorkingDays,
+    botStartTime,
+    botEndTime,
+    botWorkSaturday,
+    botStartTimeSat,
+    botEndTimeSat,
+    botWorkSunday,
+    botStartTimeSun,
+    botEndTimeSun,
+    paymentMethods,  // опционально, если храните
+    deliveryOptions
+  } = await req.json()
+
+  // Проверка доступа
+  const business = await prisma.business.findUnique({ where: { id: businessId } })
+  if (!business || business.ownerId !== payload.userId) {
+    return NextResponse.json({ error: "Нет доступа" }, { status: 403 })
+  }
+
+  // Создаём чат-бот
+  const newChatbot = await prisma.chatbot.create({
+    data: {
+      name,
+      businessId,
+      mlEnabled: mlEnabled || false,
+      botWorkingDays: botWorkingDays || [],
+      botStartTime,
+      botEndTime,
+      botWorkSaturday,
+      botStartTimeSat,
+      botEndTimeSat,
+      botWorkSunday,
+      botStartTimeSun,
+      botEndTimeSun,
+      paymentMethods,
+      deliveryOptions,
+      templateKey
+    }
+  })
+  return NextResponse.json(newChatbot)
+}
+
+export async function PATCH(req: NextRequest) {
+  const token = req.headers.get("Authorization")?.replace("Bearer ", "") || ""
+  const payload = await verifyToken(token)
+  if (!payload) {
+    return NextResponse.json({ error: "Не авторизован" }, { status: 401 })
+  }
+
+  const {
+    id,
+    name,
+    templateKey,
+    mlEnabled,
+    botWorkingDays,
+    botStartTime,
+    botEndTime,
+    botWorkSaturday,
+    botStartTimeSat,
+    botEndTimeSat,
+    botWorkSunday,
+    botStartTimeSun,
+    botEndTimeSun,
+    catalogType,
+    catalogLink,
+    catalogApiKey,
+    faqLink,
+    paymentMethods,
+    deliveryOptions
+  } = await req.json()
+
+  // Проверяем, что чат-бот принадлежит бизнесу текущего пользователя
+  const chatbot = await prisma.chatbot.findUnique({
+    where: { id },
+    include: { business: true }
+  })
+  if (!chatbot || chatbot.business.ownerId !== payload.userId) {
+    return NextResponse.json({ error: "Нет доступа" }, { status: 403 })
+  }
+
+  // Обновляем
+  const updated = await prisma.chatbot.update({
+    where: { id },
+    data: {
+      name,
+      templateKey,
+      mlEnabled,
+      botWorkingDays: botWorkingDays || [],
+      botStartTime,
+      botEndTime,
+      botWorkSaturday,
+      botStartTimeSat,
+      botEndTimeSat,
+      botWorkSunday,
+      botStartTimeSun,
+      botEndTimeSun,
+      catalogType,
+      catalogLink,
+      catalogApiKey,
+      faqLink,
+      paymentMethods,
+      deliveryOptions
+    }
+  })
+  return NextResponse.json(updated)
+}
+
+export async function DELETE(req: NextRequest) {
+  const token = req.headers.get("Authorization")?.replace("Bearer ", "") || ""
+  const payload = await verifyToken(token)
+  if (!payload) {
+    return NextResponse.json({ error: "Не авторизован" }, { status: 401 })
+  }
+
+  const { searchParams } = new URL(req.url)
+  const id = searchParams.get("id")
+
+  if (!id) {
+    return NextResponse.json({ error: "ID не указан" }, { status: 400 })
+  }
+
+  // Проверяем чат-бот
+  const chatbot = await prisma.chatbot.findUnique({
+    where: { id },
+    include: { business: true }
+  })
+  if (!chatbot || chatbot.business.ownerId !== payload.userId) {
+    return NextResponse.json({ error: "Нет доступа" }, { status: 403 })
+  }
+
+  await prisma.chatbot.delete({ where: { id } })
+  return NextResponse.json({ message: "Чат-бот удалён" })
+}
+
+// .\src\app\api\deploy\route.ts
+--------------------------------------------
+// src/app/api/deploy/route.ts
+import { NextRequest, NextResponse } from "next/server"
+import { verifyToken } from "@/lib/jwt"
+import { updateLambda } from "@/lib/awsLambda"
+
+export async function POST(req: NextRequest) {
+  const token = req.headers.get("Authorization")?.replace("Bearer ", "") || ""
+  const payload = await verifyToken(token)
+  if (!payload) {
+    return NextResponse.json({ error: "Не авторизован" }, { status: 401 })
+  }
+
+  // По желанию, проверка: если нужно только владельцам бизнеса или админам
+  // if (payload.role !== "ADMIN") {
+  //   return NextResponse.json({ error: "Нет доступа" }, { status: 403 })
+  // }
+
+  try {
+    // Допустим, в теле запроса приходит какой-то config
+    const body = await req.json()
+
+    // Вызываем функцию из awsLambda.ts
+    const result = await updateLambda(body)
+
+    return NextResponse.json({ message: "Lambda updated!", result })
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
+}
+
+// .\src\app\api\log\route.ts
+--------------------------------------------
+// src/app/api/log/route.ts
+import { NextRequest, NextResponse } from "next/server"
+import { prisma } from "@/lib/prisma"
+import { verifyToken } from "@/lib/jwt"
+
+export async function GET(req: NextRequest) {
+  const token = req.headers.get("Authorization")?.replace("Bearer ", "") || ""
+  const payload = await verifyToken(token)
+  if (!payload) {
+    return NextResponse.json({ error: "Не авторизован" }, { status: 401 })
+  }
+  if (payload.role !== "ADMIN") {
+    return NextResponse.json({ error: "Нет доступа" }, { status: 403 })
+  }
+  const logs = await prisma.log.findMany({
+    include: { user: true }
+  })
+  return NextResponse.json(logs)
+}
+
+// .\src\app\api\module\route.ts
+--------------------------------------------
+// src/app/api/module/route.ts
+import { NextRequest, NextResponse } from "next/server"
+import { prisma } from "@/lib/prisma"
+import { verifyToken } from "@/lib/jwt"
+
+export async function GET(req: NextRequest) {
+  const token = req.headers.get("Authorization")?.replace("Bearer ", "") || ""
+  const payload = await verifyToken(token)
+  if (!payload) {
+    return NextResponse.json({ error: "Не авторизован" }, { status: 401 })
+  }
+
+  // Получаем модули, связанные с чат-ботами пользователя
+  const modules = await prisma.module.findMany({
+    where: {
+      chatbots: {
+        some: {
+          business: {
+            ownerId: payload.userId
+          }
+        }
+      }
+    },
+    include: {
+      chatbots: {
+        include: {
+          business: true
+        }
+      }
+    }
+  })
+  return NextResponse.json(modules)
+}
+
+export async function POST(req: NextRequest) {
+  const token = req.headers.get("Authorization")?.replace("Bearer ", "") || ""
+  const payload = await verifyToken(token)
+  if (!payload) {
+    return NextResponse.json({ error: "Не авторизован" }, { status: 401 })
+  }
+
+  const { name, config, chatbotIds } = await req.json()
+
+  // Проверяем, что все чат-боты принадлежат бизнесам текущего пользователя
+  const chatbots = await prisma.chatbot.findMany({
+    where: {
+      id: {
+        in: chatbotIds
+      }
+    },
+    include: {
+      business: true
+    }
+  })
+
+  // Проверяем доступ к каждому чат-боту
+  const unauthorized = chatbots.some(
+    chatbot => chatbot.business.ownerId !== payload.userId
+  )
+  if (unauthorized || chatbots.length !== chatbotIds.length) {
+    return NextResponse.json({ error: "Нет доступа" }, { status: 403 })
+  }
+
+  const newModule = await prisma.module.create({
+    data: {
+      name,
+      config,
+      chatbots: {
+        connect: chatbotIds.map(id => ({ id }))
+      }
+    }
+  })
+  return NextResponse.json(newModule)
+}
+
+export async function PATCH(req: NextRequest) {
+  const token = req.headers.get("Authorization")?.replace("Bearer ", "") || ""
+  const payload = await verifyToken(token)
+  if (!payload) {
+    return NextResponse.json({ error: "Не авторизован" }, { status: 401 })
+  }
+
+  const { id, name, config, chatbotIds } = await req.json()
+
+  // Проверяем текущий модуль и его чат-боты
+  const module = await prisma.module.findUnique({
+    where: { id },
+    include: {
+      chatbots: {
+        include: {
+          business: true
+        }
+      }
+    }
+  })
+  if (!module) {
+    return NextResponse.json({ error: "Модуль не найден" }, { status: 404 })
+  }
+
+  // Проверяем, что у пользователя есть доступ хотя бы к одному чат-боту модуля
+  const hasAccess = module.chatbots.some(
+    chatbot => chatbot.business.ownerId === payload.userId
+  )
+  if (!hasAccess) {
+    return NextResponse.json({ error: "Нет доступа" }, { status: 403 })
+  }
+
+  // Если переданы новые chatbotIds, проверяем доступ к ним
+  if (chatbotIds) {
+    const newChatbots = await prisma.chatbot.findMany({
+      where: {
+        id: {
+          in: chatbotIds
+        }
+      },
+      include: {
+        business: true
+      }
+    })
+
+    const unauthorized = newChatbots.some(
+      chatbot => chatbot.business.ownerId !== payload.userId
+    )
+    if (unauthorized || newChatbots.length !== chatbotIds.length) {
+      return NextResponse.json({ error: "Нет доступа к некоторым чат-ботам" }, { status: 403 })
+    }
+  }
+
+  const updated = await prisma.module.update({
+    where: { id },
+    data: {
+      name,
+      config,
+      ...(chatbotIds && {
+        chatbots: {
+          set: chatbotIds.map(id => ({ id }))
+        }
+      })
+    }
+  })
+  return NextResponse.json(updated)
+}
+
+export async function DELETE(req: NextRequest) {
+  const token = req.headers.get("Authorization")?.replace("Bearer ", "") || ""
+  const payload = await verifyToken(token)
+  if (!payload) {
+    return NextResponse.json({ error: "Не авторизован" }, { status: 401 })
+  }
+
+  const { searchParams } = new URL(req.url)
+  const id = searchParams.get("id")
+
+  if (!id) {
+    return NextResponse.json({ error: "ID не указан" }, { status: 400 })
+  }
+
+  // Проверяем, что у пользователя есть доступ хотя бы к одному чат-боту модуля
+  const module = await prisma.module.findUnique({
+    where: { id },
+    include: {
+      chatbots: {
+        include: {
+          business: true
+        }
+      }
+    }
+  })
+  if (!module) {
+    return NextResponse.json({ error: "Модуль не найден" }, { status: 404 })
+  }
+
+  const hasAccess = module.chatbots.some(
+    chatbot => chatbot.business.ownerId === payload.userId
+  )
+  if (!hasAccess) {
+    return NextResponse.json({ error: "Нет доступа" }, { status: 403 })
+  }
+
+  await prisma.module.delete({ where: { id } })
+  return NextResponse.json({ message: "Модуль удалён" })
+}
+// .\src\app\api\user\route.ts
+--------------------------------------------
+// src/app/api/user/route.ts
+import { NextRequest, NextResponse } from "next/server"
+import { prisma } from "@/lib/prisma"
+import { verifyToken } from "@/lib/jwt"
+
+export async function GET(req: NextRequest) {
+  const token = req.headers.get("Authorization")?.replace("Bearer ", "") || ""
+  const payload = await verifyToken(token)
+  if (!payload) {
+    return NextResponse.json({ error: "Не авторизован" }, { status: 401 })
+  }
+  if (payload.role !== "ADMIN") {
+    return NextResponse.json({ error: "Нет доступа" }, { status: 403 })
+  }
+
+  const users = await prisma.user.findMany({
+    select: {
+      id: true,
+      email: true,
+      role: true,
+      failedLoginAttempts: true,
+      accountLocked: true,
+      businesses: true,
+      logs: true,
+      lang: true
+    }
+  })
+  return NextResponse.json(users)
+}
+
+export async function PATCH(req: NextRequest) {
+  const token = req.headers.get("Authorization")?.replace("Bearer ", "") || ""
+  const payload = await verifyToken(token)
+  if (!payload || typeof payload.userId !== 'string') {
+    return NextResponse.json({ error: "Не авторизован" }, { status: 401 })
+  }
+  if (payload.role !== "ADMIN") {
+    return NextResponse.json({ error: "Нет доступа" }, { status: 403 })
+  }
+
+  const { id, role, accountLocked, lang } = await req.json()
+
+  if (!id) {
+    return NextResponse.json({ error: "ID не указан" }, { status: 400 })
+  }
+
+  const user = await prisma.user.findUnique({ where: { id } })
+  if (!user) {
+    return NextResponse.json({ error: "Пользователь не найден" }, { status: 404 })
+  }
+
+   // Проверяем, не пытается ли пользователь изменить свои данные
+   if (id === payload.userId) {
+      return NextResponse.json({ error: "Нельзя изменить свои права" }, { status: 403 })
+   }
+
+  const updated = await prisma.user.update({
+    where: { id },
+    data: {
+      ...(role && { role }),
+      ...(typeof accountLocked === 'boolean' && { accountLocked }),
+      ...(accountLocked === false && { failedLoginAttempts: 0 }),
+      ...(lang && { lang })
+    },
+    select: {
+      id: true,
+      email: true,
+      role: true,
+      failedLoginAttempts: true,
+      accountLocked: true,
+      lang: true
+    }
+  })
+
+  await prisma.log.create({
+    data: {
+      userId: payload.userId,
+      action: "UPDATE_USER",
+      status: "SUCCESS",
+      details: `Updated user ${id}: ${JSON.stringify({ role, accountLocked })}`
+    }
+  })
+
+  return NextResponse.json(updated)
+}
+
+export async function DELETE(req: NextRequest) {
+  const token = req.headers.get("Authorization")?.replace("Bearer ", "") || ""
+  const payload = await verifyToken(token)
+  if (!payload || typeof payload.userId !== 'string') {
+    return NextResponse.json({ error: "Не авторизован" }, { status: 401 })
+  }
+  if (payload.role !== "ADMIN") {
+    return NextResponse.json({ error: "Нет доступа" }, { status: 403 })
+  }
+
+  const { searchParams } = new URL(req.url)
+  const id = searchParams.get("id")
+
+  if (!id) {
+    return NextResponse.json({ error: "ID не указан" }, { status: 400 })
+  }
+
+  const user = await prisma.user.findUnique({ where: { id } })
+  if (!user) {
+    return NextResponse.json({ error: "Пользователь не найден" }, { status: 404 })
+  }
+
+  if (id === payload.userId) {
+    return NextResponse.json({ error: "Нельзя удалить свой аккаунт" }, { status: 403 })
+  }
+
+  await prisma.user.delete({ where: { id } })
+
+  await prisma.log.create({
+    data: {
+      userId: payload.userId,
+      action: "DELETE_USER",
+      status: "SUCCESS",
+      details: `Deleted user ${id}`
+    }
+  })
+
+  return NextResponse.json({ message: "Пользователь удалён" })
+}
+// .\src\app\auth\login\page.tsx
+--------------------------------------------
+// src/app/auth/login/page.tsx
+"use client"
+
+import AuthForm from "@/components/AuthForm"
+
+export default function LoginPage() {
+  return (
+    <main className="flex min-h-screen items-center justify-center bg-gray-50">
+      <div className="p-6 bg-white rounded shadow w-full max-w-md">
+        <h1 className="text-2xl font-bold mb-4 text-center">Добро пожаловать в Geopard Admin Panel</h1>
+        <p className="mb-4 text-center text-gray-600">Пожалуйста, войдите или зарегистрируйтесь</p>
+        <AuthForm />
+      </div>
+    </main>
+  )
+}
+
+// .\src\components\AdminNav.tsx
+--------------------------------------------
+"use client"
+
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { cn } from "@/lib/utils"
+import {
+  LayoutDashboard,
+  Building2,
+  MessageSquare,
+  Boxes,
+  ScrollText,
+  Users
+} from "lucide-react"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { Button } from "@/components/ui/button"
+
+interface AdminNavProps {
+  isCollapsed?: boolean
+}
+
+const navItems = [
+  { 
+    href: "/admin/dashboard", 
+    label: "Dashboard",
+    description: "Общая статистика и метрики",
+    icon: LayoutDashboard
+  },
+  { 
+    href: "/admin/businesses", 
+    label: "Бизнесы",
+    description: "Управление бизнесами",
+    icon: Building2
+  },
+  { 
+    href: "/admin/chatbots",  
+    label: "Чат-боты",
+    description: "Настройка чат-ботов",
+    icon: MessageSquare
+  },
+  { 
+    href: "/admin/modules",   
+    label: "Модули",
+    description: "Управление модулями",
+    icon: Boxes
+  },
+  { 
+    href: "/admin/logs",      
+    label: "Логи",
+    description: "Журнал событий",
+    icon: ScrollText
+  },
+  { 
+    href: "/admin/users",     
+    label: "Пользователи",
+    description: "Управление пользователями",
+    icon: Users
+  }
+]
+
+export default function AdminNav({ isCollapsed = false }: AdminNavProps) {
+  const pathname = usePathname()
+
+  return (
+    <TooltipProvider delayDuration={0}>
+      <nav className="h-full flex flex-col p-4">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-bold text-white px-2">
+            Geopard Admin
+          </h2>
+        </div>
+
+        <div className="flex-1 space-y-2 overflow-y-auto">
+          {navItems.map((item) => (
+            <Tooltip key={item.href}>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  asChild
+                  className={cn(
+                    "w-full justify-start gap-2",
+                    "text-gray-300 hover:text-white",
+                    "transition-all duration-200",
+                    "hover:bg-gray-700/50",
+                    pathname === item.href && "bg-gray-700/70 text-white"
+                  )}
+                >
+                  <Link href={item.href} className="flex items-center gap-2">
+                    <item.icon className="h-4 w-4 shrink-0" />
+                    <div className="flex flex-col items-start truncate">
+                      <span className="truncate">{item.label}</span>
+                      <span className="text-xs text-gray-400 truncate">
+                        {item.description}
+                      </span>
+                    </div>
+                  </Link>
+                </Button>
+              </TooltipTrigger>
+            </Tooltip>
+          ))}
+        </div>
+      </nav>
+    </TooltipProvider>
+  )
+}
+// .\src\components\AuthForm.tsx
+--------------------------------------------
+"use client"
+
+import { useState } from "react"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { useToast } from "@/hooks/use-toast"
+import { Label } from "@/components/ui/label"
+import { useRouter } from "next/navigation"
+
+export default function AuthForm() {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const { toast } = useToast()
+  const router = useRouter()
+  const showError = (message: string) => {
+    toast({
+      variant: "destructive",
+      description: message,
+    })
+  }
+
+  const showSuccess = (message: string) => {
+    toast({
+      description: message,
+    })
+  }
+
+  const onLogin = async () => {
+    if (!email || !password) {
+      showError("Укажите email и пароль")
+      return
+    }
+    
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      })
+      const data = await res.json()
+      
+      if (data.token) {
+        localStorage.setItem("token", data.token)
+        showSuccess("Добро пожаловать в Geopard Alpha!")
+        router.push('/admin/dashboard')
+      } else {
+        showError(data.error || "Ошибка входа")
+      }
+    } catch (error) {
+      showError("Произошла ошибка при входе")
+    }
+  }
+
+  const onRegister = async () => {
+    if (!email || !password) {
+      showError("Укажите email и пароль")
+      return
+    }
+    
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      })
+      const data = await res.json()
+      
+      if (data.user) {
+        showSuccess("Регистрация прошла успешна, пожалуйста авторизуйтесь")
+      } else {
+        showError(data.error || "Ошибка регистрации")
+      }
+    } catch (error) {
+      showError("Произошла ошибка при регистрации")
+    }
+  }
+
+  return (
+    <Card className="w-full max-w-md">
+      <CardHeader>
+        <CardTitle>Вход в систему</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="your@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="password">Пароль</Label>
+          <Input
+            id="password"
+            type="password"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div className="flex justify-between pt-2">
+          <Button onClick={onLogin} className="flex-1 mr-2">
+            Войти
+          </Button>
+          <Button onClick={onRegister} variant="outline" className="flex-1 ml-2">
+            Зарегистрироваться
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+// .\src\components\BusinessForm.tsx
+--------------------------------------------
+// src/components/BusinessForm.tsx
+"use client"
+
+import { useState } from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Switch } from "@/components/ui/switch"
+import { useToast } from "@/hooks/use-toast"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
+import { useLocale } from "@/context/LocaleContext"
+import { Separator } from "@/components/ui/separator"
+
+export default function BusinessForm({ onCreated }: { onCreated: () => void }) {
+  const { t } = useLocale()
+  const { toast } = useToast()
+  const [isLoading, setIsLoading] = useState(false)
+  const [formData, setFormData] = useState({
+    name: "",
+    type: "",
+    promoLink: "",
+    phone: "",
+    geo: "",
+    style: "",
+    targetAction: "",
+    workingDays: [] as string[],
+    startTime: "09:00",
+    endTime: "18:00",
+    workSaturday: false,
+    startTimeSat: "10:00",
+    endTimeSat: "16:00",
+    workSunday: false,
+    startTimeSun: "10:00",
+    endTimeSun: "16:00",
+    catalogType: "google",
+    catalogLink: "",
+    catalogApiKey: "",
+    faqLink: ""
+  })
+  const workingDaysLabels = t("chatbotForm.workingDays") as unknown as string[]
+
+  const toggleWorkingDay = (day: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      workingDays: prev.workingDays.includes(day)
+        ? prev.workingDays.filter((d) => d !== day)
+        : [...prev.workingDays, day]
+    }))
+  }
+
+  const handleChange =
+    (field: string) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+      setFormData((prev) => ({
+        ...prev,
+        [field]: e.target.value
+      }))
+    }
+
+  const onCreate = async () => {
+    if (!formData.name.trim()) {
+      toast({
+        variant: "destructive",
+        title: t("common.error"),
+        description: "Пожалуйста, введите название бизнеса"
+      })
+      return
+    }
+    setIsLoading(true)
+    try {
+      const token = localStorage.getItem("token")
+      const res = await fetch("/api/business", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          ...formData,
+          name: formData.name.trim()
+        })
+      })
+      const data = await res.json()
+      if (data.error) {
+        toast({
+          variant: "destructive",
+          title: t("common.error"),
+          description: data.error
+        })
+      } else {
+        toast({
+          title: t("common.success"),
+          description: "Бизнес успешно создан!"
+        })
+        setFormData({
+          name: "",
+          type: "",
+          promoLink: "",
+          phone: "",
+          geo: "",
+          style: "",
+          targetAction: "",
+          workingDays: [],
+          startTime: "09:00",
+          endTime: "18:00",
+          workSaturday: false,
+          startTimeSat: "10:00",
+          endTimeSat: "16:00",
+          workSunday: false,
+          startTimeSun: "10:00",
+          endTimeSun: "16:00",
+          catalogType: "google",
+          catalogLink: "",
+          catalogApiKey: "",
+          faqLink: ""
+        })
+        onCreated()
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: t("common.error"),
+        description: "Произошла ошибка при создании бизнеса"
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <Card className="mb-6 border bg-card">
+      <CardHeader className="pb-4">
+        <CardTitle className="text-lg font-semibold">Добавить новый бизнес</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4 pt-0">
+        <div>
+          <Label htmlFor="name">Название бизнеса</Label>
+          <Input
+            id="name"
+            placeholder="Название бизнеса"
+            value={formData.name}
+            onChange={handleChange("name")}
+          />
+        </div>
+        <div>
+          <Label htmlFor="type">Тип бизнеса</Label>
+          <Input
+            id="type"
+            placeholder="Например: цветочный магазин"
+            value={formData.type}
+            onChange={handleChange("type")}
+          />
+        </div>
+        <div>
+          <Label htmlFor="promoLink">Ссылка на Google таблицу (промо)</Label>
+          <Input
+            id="promoLink"
+            placeholder="https://docs.google.com/spreadsheets/..."
+            value={formData.promoLink}
+            onChange={handleChange("promoLink")}
+          />
+        </div>
+        <div>
+          <Label htmlFor="phone">Телефон для связи</Label>
+          <Input
+            id="phone"
+            placeholder="+7 (___) ___-__-__"
+            value={formData.phone}
+            onChange={handleChange("phone")}
+          />
+        </div>
+        <div>
+          <Label htmlFor="geo">Адрес</Label>
+          <Input
+            id="geo"
+            placeholder="Например: Актобе, ул.Сырым Датова 38"
+            value={formData.geo}
+            onChange={handleChange("geo")}
+          />
+        </div>
+        <div>
+          <Label htmlFor="style">Стиль общения</Label>
+          <Input
+            id="style"
+            placeholder="Прямой и четкий, Дружелюбный..."
+            value={formData.style}
+            onChange={handleChange("style")}
+          />
+        </div>
+        <div>
+          <Label htmlFor="targetAction">Целевое действие</Label>
+          <select
+            id="targetAction"
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            value={formData.targetAction}
+            onChange={handleChange("targetAction")}
+          >
+            <option value="">Не выбрано</option>
+            <option value="purchase">Покупка</option>
+            <option value="booking">Бронирование</option>
+            <option value="leadgen">Лидогенерация</option>
+            <option value="support">Поддержка</option>
+          </select>
+        </div>
+        <Separator />
+        <div className="space-y-4">
+          <Label className="text-base">Часы работы (бизнес)</Label>
+          <div className="grid grid-cols-5 gap-4">
+            {workingDaysLabels?.map((day) => (
+              <div key={day} className="flex items-center space-x-2">
+                <Checkbox
+                  id={day}
+                  checked={formData.workingDays.includes(day)}
+                  onCheckedChange={() => toggleWorkingDay(day)}
+                />
+                <Label htmlFor={day}>{day}</Label>
+              </div>
+            ))}
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Начало (будни)</Label>
+              <Input
+                type="time"
+                value={formData.startTime}
+                onChange={handleChange("startTime")}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Конец (будни)</Label>
+              <Input
+                type="time"
+                value={formData.endTime}
+                onChange={handleChange("endTime")}
+              />
+            </div>
+          </div>
+          <div className="flex items-center space-x-2 mt-4">
+            <Switch
+              id="workSaturday"
+              checked={formData.workSaturday}
+              onCheckedChange={(checked) =>
+                setFormData((prev) => ({ ...prev, workSaturday: checked }))
+              }
+            />
+            <Label htmlFor="workSaturday">Суббота</Label>
+          </div>
+          {formData.workSaturday && (
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Начало (Сб)</Label>
+                <Input
+                  type="time"
+                  value={formData.startTimeSat}
+                  onChange={handleChange("startTimeSat")}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Конец (Сб)</Label>
+                <Input
+                  type="time"
+                  value={formData.endTimeSat}
+                  onChange={handleChange("endTimeSat")}
+                />
+              </div>
+            </div>
+          )}
+          <div className="flex items-center space-x-2 mt-4">
+            <Switch
+              id="workSunday"
+              checked={formData.workSunday}
+              onCheckedChange={(checked) =>
+                setFormData((prev) => ({ ...prev, workSunday: checked }))
+              }
+            />
+            <Label htmlFor="workSunday">Воскресенье</Label>
+          </div>
+          {formData.workSunday && (
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Начало (Вс)</Label>
+                <Input
+                  type="time"
+                  value={formData.startTimeSun}
+                  onChange={handleChange("startTimeSun")}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Конец (Вс)</Label>
+                <Input
+                  type="time"
+                  value={formData.endTimeSun}
+                  onChange={handleChange("endTimeSun")}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+        <Separator />
+<div className="space-y-4">
+  <Label className="text-base">{t("chatbotForm.catalogTitle")}</Label>
+  <Select value={formData.catalogType} 
+         onValueChange={(value) => setFormData(prev => ({...prev, catalogType: value}))}>
+    <SelectTrigger>
+      <SelectValue placeholder="Выберите тип каталога" />
+    </SelectTrigger>
+    <SelectContent>
+      <SelectItem value="google">{t("chatbotForm.googleCatalog")}</SelectItem>
+      <SelectItem value="posiflora">{t("chatbotForm.posifloraCatalog")}</SelectItem>
+    </SelectContent>
+  </Select>
+  {formData.catalogType === "google" && (
+    <div className="space-y-2">
+      <Label>Ссылка на Google таблицу</Label>
+      <Input
+        placeholder="https://docs.google.com/spreadsheets/..."
+        value={formData.catalogLink}
+        onChange={handleChange("catalogLink")}
+      />
+    </div>
+  )}
+  {formData.catalogType === "posiflora" && (
+    <div className="space-y-2">
+      <Label>API ключ Posiflora</Label>
+      <Input
+        placeholder="APIKEY_XXXXXX"
+        value={formData.catalogApiKey}
+        onChange={handleChange("catalogApiKey")}
+      />
+    </div>
+  )}
+</div>
+<Separator />
+<div className="space-y-2">
+  <Label className="text-base">{t("chatbotForm.faqLabel")}</Label>
+  <Input
+    placeholder="Ссылка на Google таблицу..."
+    value={formData.faqLink}
+    onChange={handleChange("faqLink")}
+  />
+</div>
+        <Button onClick={onCreate} disabled={isLoading} className="w-full">
+          {isLoading ? "Создание..." : "Создать бизнес"}
+        </Button>
+      </CardContent>
+    </Card>
+  )
+}
+
+// .\src\components\ChatbotForm.tsx
+--------------------------------------------
+// src/components/ChatbotForm.tsx
+"use client"
+
+import { useState, useEffect } from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Switch } from "@/components/ui/switch"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select"
+import { MessageSquarePlus } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
+import { Separator } from "@/components/ui/separator"
+import { useLocale } from "@/context/LocaleContext"
+
+export default function ChatbotForm({
+  onCreated,
+  businesses
+}: {
+  onCreated: () => void
+  businesses: any[]
+}) {
+  const { t } = useLocale()
+  const { toast } = useToast()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const [name, setName] = useState("")
+  const [businessId, setBusinessId] = useState("")
+  const [templateKey, setTemplateKey] = useState("T1")
+  const [mlEnabled, setMlEnabled] = useState(false)
+  const [botWorkingDays, setBotWorkingDays] = useState<string[]>([])
+  const [botStartTime, setBotStartTime] = useState("09:00")
+  const [botEndTime, setBotEndTime] = useState("18:00")
+  const [botWorkSaturday, setBotWorkSaturday] = useState(false)
+  const [botStartTimeSat, setBotStartTimeSat] = useState("10:00")
+  const [botEndTimeSat, setBotEndTimeSat] = useState("16:00")
+  const [botWorkSunday, setBotWorkSunday] = useState(false)
+  const [botStartTimeSun, setBotStartTimeSun] = useState("10:00")
+  const [botEndTimeSun, setBotEndTimeSun] = useState("16:00")
+  const paymentOptions = ["Банковские карты", "Наличные", "Kaspi", "Halyk", "Freedom", "Forte"]
+  const [paymentMethods, setPaymentMethods] = useState<string[]>([])
+  const [deliveryOptions, setDeliveryOptions] = useState<{ name: string; price: string; time: string }[]>([])
+  const [deliveryName, setDeliveryName] = useState("")
+  const [deliveryPrice, setDeliveryPrice] = useState("")
+  const [deliveryTime, setDeliveryTime] = useState("")
+  const [selectedBusiness, setSelectedBusiness] = useState<any | null>(null)
+  const workingDaysLabels = t("chatbotForm.workingDays") as unknown as string[]
+
+  useEffect(() => {
+    if (!businessId) {
+      setSelectedBusiness(null)
+      return
+    }
+    const token = localStorage.getItem("token")
+    fetch(`/api/business/${businessId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data.error) {
+          setSelectedBusiness(data)
+        } else {
+          setSelectedBusiness(null)
+        }
+      })
+      .catch(() => setSelectedBusiness(null))
+  }, [businessId])
+
+  const toggleBotDay = (day: string) => {
+    setBotWorkingDays((prev) =>
+      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
+    )
+  }
+
+  const addDelivery = () => {
+    if (!deliveryName.trim()) {
+      toast({
+        variant: "destructive",
+        title: t("common.error"),
+        description: "Укажите название способа доставки"
+      })
+      return
+    }
+    setDeliveryOptions((prev) => [
+      ...prev,
+      {
+        name: deliveryName.trim(),
+        price: deliveryPrice.trim(),
+        time: deliveryTime.trim()
+      }
+    ])
+    setDeliveryName("")
+    setDeliveryPrice("")
+    setDeliveryTime("")
+  }
+
+  const onCreate = async () => {
+    if (!name.trim() || !businessId.trim()) {
+      toast({
+        variant: "destructive",
+        title: t("common.error"),
+        description: "Пожалуйста, укажите название чат-бота и бизнес"
+      })
+      return
+    }
+    setIsLoading(true)
+    try {
+      const token = localStorage.getItem("token")
+      const res = await fetch("/api/chatbot", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          businessId: businessId.trim(),
+          templateKey,
+          mlEnabled,
+          botWorkingDays,
+          botStartTime,
+          botEndTime,
+          botWorkSaturday,
+          botStartTimeSat,
+          botEndTimeSat,
+          botWorkSunday,
+          botStartTimeSun,
+          botEndTimeSun,
+          paymentMethods,
+          deliveryOptions
+        })
+      })
+      const data = await res.json()
+      if (data.error) {
+        toast({
+          variant: "destructive",
+          title: t("common.error"),
+          description: data.error
+        })
+      } else {
+        toast({
+          title: t("common.success"),
+          description: "Чат-бот успешно создан!"
+        })
+        onCreated()
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: t("common.error"),
+        description: "Произошла ошибка при создании чат-бота"
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <Card className="mb-6">
+      <CardHeader>
+        <CardTitle className="text-lg">{t("chatbotForm.title")}</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>{t("chatbotForm.nameLabel")}</Label>
+            <Input
+              placeholder="Мой бот"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>{t("chatbotForm.businessLabel")}</Label>
+            <Select value={businessId} onValueChange={setBusinessId}>
+              <SelectTrigger>
+                <SelectValue placeholder="Выберите бизнес" />
+              </SelectTrigger>
+              <SelectContent>
+                {businesses.map((biz: any) => (
+                  <SelectItem key={biz.id} value={biz.id}>
+                    {biz.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {selectedBusiness && (
+              <div className="mt-2 p-2 border rounded bg-gray-50 text-sm">
+                <p className="font-medium mb-1">Часы работы выбранного бизнеса:</p>
+                <p>Будни: {selectedBusiness.workingDays?.join(", ") || "—"} ({selectedBusiness.startTime}—{selectedBusiness.endTime})</p>
+                {selectedBusiness.workSaturday && (
+                  <p>
+                    Суббота: {selectedBusiness.startTimeSat}—{selectedBusiness.endTimeSat}
+                  </p>
+                )}
+                {selectedBusiness.workSunday && (
+                  <p>
+                    Воскресенье: {selectedBusiness.startTimeSun}—{selectedBusiness.endTimeSun}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label>{t("chatbotForm.templateLabel")}</Label>
+            <Select value={templateKey} onValueChange={setTemplateKey}>
+              <SelectTrigger>
+                <SelectValue placeholder="Выберите шаблон" />
+              </SelectTrigger>
+              <SelectContent>
+                {[1, 2, 3, 4, 5].map((num) => (
+                  <SelectItem key={num} value={`T${num}`}>
+                    Шаблон {num}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        <Separator />
+        <div className="flex items-center space-x-2">
+          <Switch id="mlEnabled" checked={mlEnabled} onCheckedChange={setMlEnabled} />
+          <Label htmlFor="mlEnabled">Включить машинное обучение</Label>
+        </div>
+        <Separator />
+        <div className="space-y-4">
+          <Label className="text-base">Часы работы чат-бота</Label>
+          <div className="grid grid-cols-5 gap-4">
+            {workingDaysLabels?.map((day) => (
+              <div key={day} className="flex items-center space-x-2">
+                <Checkbox
+                  id={day}
+                  checked={botWorkingDays.includes(day)}
+                  onCheckedChange={() => toggleBotDay(day)}
+                />
+                <Label htmlFor={day}>{day}</Label>
+              </div>
+            ))}
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Начало (будни)</Label>
+              <Input
+                type="time"
+                value={botStartTime}
+                onChange={(e) => setBotStartTime(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Конец (будни)</Label>
+              <Input
+                type="time"
+                value={botEndTime}
+                onChange={(e) => setBotEndTime(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="flex items-center space-x-2 mt-4">
+            <Switch
+              id="botWorkSaturday"
+              checked={botWorkSaturday}
+              onCheckedChange={setBotWorkSaturday}
+            />
+            <Label htmlFor="botWorkSaturday">Суббота</Label>
+          </div>
+          {botWorkSaturday && (
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Начало (Сб)</Label>
+                <Input
+                  type="time"
+                  value={botStartTimeSat}
+                  onChange={(e) => setBotStartTimeSat(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Конец (Сб)</Label>
+                <Input
+                  type="time"
+                  value={botEndTimeSat}
+                  onChange={(e) => setBotEndTimeSat(e.target.value)}
+                />
+              </div>
+            </div>
+          )}
+          <div className="flex items-center space-x-2 mt-4">
+            <Switch
+              id="botWorkSunday"
+              checked={botWorkSunday}
+              onCheckedChange={setBotWorkSunday}
+            />
+            <Label htmlFor="botWorkSunday">Воскресенье</Label>
+          </div>
+          {botWorkSunday && (
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Начало (Вс)</Label>
+                <Input
+                  type="time"
+                  value={botStartTimeSun}
+                  onChange={(e) => setBotStartTimeSun(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Конец (Вс)</Label>
+                <Input
+                  type="time"
+                  value={botEndTimeSun}
+                  onChange={(e) => setBotEndTimeSun(e.target.value)}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+        <Separator />
+        <div className="space-y-4">
+          <Label className="text-base">{t("chatbotForm.paymentTitle")}</Label>
+          <div className="grid grid-cols-2 gap-4">
+            {paymentOptions.map((method) => (
+              <div key={method} className="flex items-center space-x-2">
+                <Checkbox
+                  id={method}
+                  checked={paymentMethods.includes(method)}
+                  onCheckedChange={(checked) => {
+                    setPaymentMethods((prev) =>
+                      checked ? [...prev, method] : prev.filter((m) => m !== method)
+                    )
+                  }}
+                />
+                <Label htmlFor={method}>{method}</Label>
+              </div>
+            ))}
+          </div>
+        </div>
+        <Separator />
+        <div className="space-y-4">
+          <Label className="text-base">{t("chatbotForm.deliveryTitle")}</Label>
+          <div className="grid grid-cols-3 gap-4">
+            <Input
+              placeholder="Название"
+              value={deliveryName}
+              onChange={(e) => setDeliveryName(e.target.value)}
+            />
+            <Input
+              placeholder="Цена"
+              value={deliveryPrice}
+              onChange={(e) => setDeliveryPrice(e.target.value)}
+            />
+            <Input
+              placeholder="Срок доставки"
+              value={deliveryTime}
+              onChange={(e) => setDeliveryTime(e.target.value)}
+            />
+          </div>
+          <Button onClick={addDelivery} variant="secondary" className="w-full">
+            {t("chatbotForm.addDelivery")}
+          </Button>
+          {deliveryOptions.length > 0 && (
+            <div className="border rounded-lg p-4 space-y-2">
+              {deliveryOptions.map((opt, idx) => (
+                <div key={idx} className="flex justify-between items-center">
+                  <span>{opt.name}</span>
+                  <span className="text-muted-foreground">
+                    {opt.price} • {opt.time}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        <Button onClick={onCreate} disabled={isLoading} className="w-full">
+          {isLoading ? (
+            <span className="inline-flex items-center">
+              <svg
+                className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              {t("common.loading")}
+            </span>
+          ) : (
+            <>
+              <MessageSquarePlus className="mr-2 h-4 w-4" />
+              {t("chatbotForm.createBot")}
+            </>
+          )}
+        </Button>
+      </CardContent>
+    </Card>
+  )
+}
+
+// .\src\components\ModuleForm.tsx
+--------------------------------------------
+import { useState } from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Button } from "@/components/ui/button"
+import { Puzzle } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
+
+export default function ModuleForm({ onCreated }: { onCreated: () => void }) {
+  const [name, setName] = useState("")
+  const [config, setConfig] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const { toast } = useToast()
+
+  const validateJSON = (text: string): { valid: boolean; parsed: any } => {
+    if (!text.trim()) return { valid: true, parsed: {} }
+    try {
+      const parsed = JSON.parse(text)
+      return { valid: true, parsed }
+    } catch (e) {
+      return { valid: false, parsed: null }
+    }
+  }
+
+  const onCreate = async () => {
+    if (!name.trim()) {
+      toast({
+        variant: "destructive",
+        title: "Ошибка",
+        description: "Пожалуйста, введите название модуля"
+      })
+      return
+    }
+
+    const { valid, parsed: parsedConfig } = validateJSON(config)
+    if (!valid) {
+      toast({
+        variant: "destructive",
+        title: "Ошибка",
+        description: "Некорректный JSON в поле конфигурации"
+      })
+      return
+    }
+
+    setIsLoading(true)
+    try {
+      const token = localStorage.getItem("token")
+      const res = await fetch("/api/module", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ 
+          name: name.trim(), 
+          config: parsedConfig 
+        })
+      })
+      const data = await res.json()
+      
+      if (data.error) {
+        toast({
+          variant: "destructive",
+          title: "Ошибка",
+          description: data.error
+        })
+      } else {
+        toast({
+          title: "Успешно",
+          description: "Модуль успешно создан!"
+        })
+        setName("")
+        setConfig("")
+        onCreated()
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Ошибка",
+        description: "Произошла ошибка при создании модуля"
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && e.ctrlKey) {
+      onCreate()
+    }
+  }
+
+  return (
+    <Card className="mb-6">
+      <CardHeader>
+        <CardTitle className="text-lg">Добавить новый модуль</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <Input
+          placeholder="Название модуля"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+        <Textarea
+          placeholder={'Конфигурация в формате JSON\nНапример: {"key": "value"}'}
+          value={config}
+          onChange={(e) => setConfig(e.target.value)}
+          onKeyDown={handleKeyDown}
+          rows={4}
+          className="font-mono resize-y min-h-[100px]"
+        />
+        <Button 
+          onClick={onCreate} 
+          disabled={isLoading}
+          className="w-full"
+        >
+          {isLoading ? (
+            <span className="inline-flex items-center">
+              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Создание...
+            </span>
+          ) : (
+            <>
+              <Puzzle className="mr-2 h-4 w-4" />
+              Создать модуль
+            </>
+          )}
+        </Button>
+      </CardContent>
+    </Card>
+  )
+}
+// .\src\components\PromptEditor.tsx
+--------------------------------------------
+import { useState } from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
+import { Bot, Building2, FileEdit, ListTodo, Package2, Phone } from "lucide-react"
+import { universalPrompt } from "@/prompts/universalPrompt"
+
+export default function PromptEditor() {
+  const [businessName, setBusinessName] = useState("")
+  const [chatbotName, setChatbotName] = useState("")
+  const [chatbotTask, setChatbotTask] = useState("")
+  const [services, setServices] = useState("")
+  const [modules, setModules] = useState("")
+  const [contacts, setContacts] = useState("")
+  const [language, setLanguage] = useState("Русском")
+
+  const preview = universalPrompt
+    .replace("[BUSINESS_NAME]", businessName)
+    .replace("[CHATBOT_NAME]", chatbotName)
+    .replace("[CHATBOT_TASK]", chatbotTask)
+    .replace("[BUSINESS_SERVICES]", services)
+    .replace("[CHATBOT_MODULES]", modules)
+    .replace("[BUSINESS_CONTACTS]", contacts)
+    .replace("[LANGUAGE]", language)
+
+  const InputField = ({ 
+    label, 
+    value, 
+    onChange, 
+    placeholder,
+    icon: Icon
+  }) => (
+    <div className="space-y-2">
+      <Label className="flex items-center gap-2">
+        <Icon className="h-4 w-4" />
+        {label}
+      </Label>
+      <Input
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+      />
+    </div>
+  )
+
+  return (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <FileEdit className="h-5 w-5" />
+            Редактор промпта
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <InputField
+            label="Название бизнеса"
+            value={businessName}
+            onChange={(e) => setBusinessName(e.target.value)}
+            placeholder="Например: ООО 'Компания'"
+            icon={Building2}
+          />
+          
+          <InputField
+            label="Имя чат-бота"
+            value={chatbotName}
+            onChange={(e) => setChatbotName(e.target.value)}
+            placeholder="Например: Ассистент Алиса"
+            icon={Bot}
+          />
+          
+          <InputField
+            label="Задача чат-бота"
+            value={chatbotTask}
+            onChange={(e) => setChatbotTask(e.target.value)}
+            placeholder="Например: Консультация клиентов по услугам"
+            icon={ListTodo}
+          />
+          
+          <div className="space-y-2">
+            <Label className="flex items-center gap-2">
+              <Package2 className="h-4 w-4" />
+              Список товаров/услуг
+            </Label>
+            <Textarea
+              placeholder="Введите список товаров или услуг, каждый с новой строки"
+              value={services}
+              onChange={(e) => setServices(e.target.value)}
+              className="min-h-[100px] resize-y"
+            />
+          </div>
+          
+          <InputField
+            label="Подключенные модули"
+            value={modules}
+            onChange={(e) => setModules(e.target.value)}
+            placeholder="Например: FAQ, Запись на прием"
+            icon={Package2}
+          />
+          
+          <InputField
+            label="Контакты"
+            value={contacts}
+            onChange={(e) => setContacts(e.target.value)}
+            placeholder="Например: +7 (XXX) XXX-XX-XX, email@example.com"
+            icon={Phone}
+          />
+          
+          <div className="space-y-2">
+            <Label>Язык общения</Label>
+            <Select
+              value={language}
+              onValueChange={setLanguage}
+            >
+              <SelectTrigger>
+                <SelectValue/>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Русском">Русский</SelectItem>
+                <SelectItem value="Казахском">Казахский</SelectItem>
+                <SelectItem value="Английском">Английский</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Предпросмотр промпта</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <pre className="whitespace-pre-wrap bg-gray-50 p-4 rounded-lg text-sm font-mono">
+            {preview}
+          </pre>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+// .\src\components\ui\alert-dialog.tsx
+--------------------------------------------
+"use client"
+
+import * as React from "react"
+import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog"
+
+import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
+
+const AlertDialog = AlertDialogPrimitive.Root
+
+const AlertDialogTrigger = AlertDialogPrimitive.Trigger
+
+const AlertDialogPortal = AlertDialogPrimitive.Portal
+
+const AlertDialogOverlay = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Overlay>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Overlay>
+>(({ className, ...props }, ref) => (
+  <AlertDialogPrimitive.Overlay
+    className={cn(
+      "fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      className
+    )}
+    {...props}
+    ref={ref}
+  />
+))
+AlertDialogOverlay.displayName = AlertDialogPrimitive.Overlay.displayName
+
+const AlertDialogContent = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Content>
+>(({ className, ...props }, ref) => (
+  <AlertDialogPortal>
+    <AlertDialogOverlay />
+    <AlertDialogPrimitive.Content
+      ref={ref}
+      className={cn(
+        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg",
+        className
+      )}
+      {...props}
+    />
+  </AlertDialogPortal>
+))
+AlertDialogContent.displayName = AlertDialogPrimitive.Content.displayName
+
+const AlertDialogHeader = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      "flex flex-col space-y-2 text-center sm:text-left",
+      className
+    )}
+    {...props}
+  />
+)
+AlertDialogHeader.displayName = "AlertDialogHeader"
+
+const AlertDialogFooter = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+      className
+    )}
+    {...props}
+  />
+)
+AlertDialogFooter.displayName = "AlertDialogFooter"
+
+const AlertDialogTitle = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Title>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Title>
+>(({ className, ...props }, ref) => (
+  <AlertDialogPrimitive.Title
+    ref={ref}
+    className={cn("text-lg font-semibold", className)}
+    {...props}
+  />
+))
+AlertDialogTitle.displayName = AlertDialogPrimitive.Title.displayName
+
+const AlertDialogDescription = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Description>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Description>
+>(({ className, ...props }, ref) => (
+  <AlertDialogPrimitive.Description
+    ref={ref}
+    className={cn("text-sm text-muted-foreground", className)}
+    {...props}
+  />
+))
+AlertDialogDescription.displayName =
+  AlertDialogPrimitive.Description.displayName
+
+const AlertDialogAction = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Action>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Action>
+>(({ className, ...props }, ref) => (
+  <AlertDialogPrimitive.Action
+    ref={ref}
+    className={cn(buttonVariants(), className)}
+    {...props}
+  />
+))
+AlertDialogAction.displayName = AlertDialogPrimitive.Action.displayName
+
+const AlertDialogCancel = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Cancel>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Cancel>
+>(({ className, ...props }, ref) => (
+  <AlertDialogPrimitive.Cancel
+    ref={ref}
+    className={cn(
+      buttonVariants({ variant: "outline" }),
+      "mt-2 sm:mt-0",
+      className
+    )}
+    {...props}
+  />
+))
+AlertDialogCancel.displayName = AlertDialogPrimitive.Cancel.displayName
+
+export {
+  AlertDialog,
+  AlertDialogPortal,
+  AlertDialogOverlay,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+}
+
+// .\src\components\ui\alert.tsx
+--------------------------------------------
+import * as React from "react"
+import { cva, type VariantProps } from "class-variance-authority"
+
+import { cn } from "@/lib/utils"
+
+const alertVariants = cva(
+  "relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground",
+  {
+    variants: {
+      variant: {
+        default: "bg-background text-foreground",
+        destructive:
+          "border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+)
+
+const Alert = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>
+>(({ className, variant, ...props }, ref) => (
+  <div
+    ref={ref}
+    role="alert"
+    className={cn(alertVariants({ variant }), className)}
+    {...props}
+  />
+))
+Alert.displayName = "Alert"
+
+const AlertTitle = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLHeadingElement>
+>(({ className, ...props }, ref) => (
+  <h5
+    ref={ref}
+    className={cn("mb-1 font-medium leading-none tracking-tight", className)}
+    {...props}
+  />
+))
+AlertTitle.displayName = "AlertTitle"
+
+const AlertDescription = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("text-sm [&_p]:leading-relaxed", className)}
+    {...props}
+  />
+))
+AlertDescription.displayName = "AlertDescription"
+
+export { Alert, AlertTitle, AlertDescription }
+
+// .\src\components\ui\button.tsx
+--------------------------------------------
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
+
+import { cn } from "@/lib/utils"
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline:
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-10 px-4 py-2",
+        sm: "h-9 rounded-md px-3",
+        lg: "h-11 rounded-md px-8",
+        icon: "h-10 w-10",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+)
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Button.displayName = "Button"
+
+export { Button, buttonVariants }
+
+// .\src\components\ui\card.tsx
+--------------------------------------------
+import * as React from "react"
+
+import { cn } from "@/lib/utils"
+
+const Card = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "rounded-lg border bg-card text-card-foreground shadow-sm",
+      className
+    )}
+    {...props}
+  />
+))
+Card.displayName = "Card"
+
+const CardHeader = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    {...props}
+  />
+))
+CardHeader.displayName = "CardHeader"
+
+const CardTitle = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "text-2xl font-semibold leading-none tracking-tight",
+      className
+    )}
+    {...props}
+  />
+))
+CardTitle.displayName = "CardTitle"
+
+const CardDescription = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("text-sm text-muted-foreground", className)}
+    {...props}
+  />
+))
+CardDescription.displayName = "CardDescription"
+
+const CardContent = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+))
+CardContent.displayName = "CardContent"
+
+const CardFooter = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex items-center p-6 pt-0", className)}
+    {...props}
+  />
+))
+CardFooter.displayName = "CardFooter"
+
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
+
+// .\src\components\ui\checkbox.tsx
+--------------------------------------------
+"use client"
+
+import * as React from "react"
+import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
+import { Check } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+
+const Checkbox = React.forwardRef<
+  React.ElementRef<typeof CheckboxPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
+>(({ className, ...props }, ref) => (
+  <CheckboxPrimitive.Root
+    ref={ref}
+    className={cn(
+      "peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground",
+      className
+    )}
+    {...props}
+  >
+    <CheckboxPrimitive.Indicator
+      className={cn("flex items-center justify-center text-current")}
+    >
+      <Check className="h-4 w-4" />
+    </CheckboxPrimitive.Indicator>
+  </CheckboxPrimitive.Root>
+))
+Checkbox.displayName = CheckboxPrimitive.Root.displayName
+
+export { Checkbox }
+
+// .\src\components\ui\dialog.tsx
+--------------------------------------------
+"use client"
+
+import * as React from "react"
+import * as DialogPrimitive from "@radix-ui/react-dialog"
+import { X } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+
+const Dialog = DialogPrimitive.Root
+
+const DialogTrigger = DialogPrimitive.Trigger
+
+const DialogPortal = DialogPrimitive.Portal
+
+const DialogClose = DialogPrimitive.Close
+
+const DialogOverlay = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Overlay>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Overlay
+    ref={ref}
+    className={cn(
+      "fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      className
+    )}
+    {...props}
+  />
+))
+DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
+
+const DialogContent = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
+>(({ className, children, ...props }, ref) => (
+  <DialogPortal>
+    <DialogOverlay />
+    <DialogPrimitive.Content
+      ref={ref}
+      className={cn(
+        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg",
+        className
+      )}
+      {...props}
+    >
+      {children}
+      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+        <X className="h-4 w-4" />
+        <span className="sr-only">Close</span>
+      </DialogPrimitive.Close>
+    </DialogPrimitive.Content>
+  </DialogPortal>
+))
+DialogContent.displayName = DialogPrimitive.Content.displayName
+
+const DialogHeader = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      "flex flex-col space-y-1.5 text-center sm:text-left",
+      className
+    )}
+    {...props}
+  />
+)
+DialogHeader.displayName = "DialogHeader"
+
+const DialogFooter = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+      className
+    )}
+    {...props}
+  />
+)
+DialogFooter.displayName = "DialogFooter"
+
+const DialogTitle = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Title>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Title
+    ref={ref}
+    className={cn(
+      "text-lg font-semibold leading-none tracking-tight",
+      className
+    )}
+    {...props}
+  />
+))
+DialogTitle.displayName = DialogPrimitive.Title.displayName
+
+const DialogDescription = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Description>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Description
+    ref={ref}
+    className={cn("text-sm text-muted-foreground", className)}
+    {...props}
+  />
+))
+DialogDescription.displayName = DialogPrimitive.Description.displayName
+
+export {
+  Dialog,
+  DialogPortal,
+  DialogOverlay,
+  DialogClose,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+}
+
+// .\src\components\ui\form.tsx
+--------------------------------------------
+"use client"
+
+import * as React from "react"
+import * as LabelPrimitive from "@radix-ui/react-label"
+import { Slot } from "@radix-ui/react-slot"
+import {
+  Controller,
+  ControllerProps,
+  FieldPath,
+  FieldValues,
+  FormProvider,
+  useFormContext,
+} from "react-hook-form"
+
+import { cn } from "@/lib/utils"
+import { Label } from "@/components/ui/label"
+
+const Form = FormProvider
+
+type FormFieldContextValue<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> = {
+  name: TName
+}
+
+const FormFieldContext = React.createContext<FormFieldContextValue>(
+  {} as FormFieldContextValue
+)
+
+const FormField = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+>({
+  ...props
+}: ControllerProps<TFieldValues, TName>) => {
+  return (
+    <FormFieldContext.Provider value={{ name: props.name }}>
+      <Controller {...props} />
+    </FormFieldContext.Provider>
+  )
+}
+
+const useFormField = () => {
+  const fieldContext = React.useContext(FormFieldContext)
+  const itemContext = React.useContext(FormItemContext)
+  const { getFieldState, formState } = useFormContext()
+
+  const fieldState = getFieldState(fieldContext.name, formState)
+
+  if (!fieldContext) {
+    throw new Error("useFormField should be used within <FormField>")
+  }
+
+  const { id } = itemContext
+
+  return {
+    id,
+    name: fieldContext.name,
+    formItemId: `${id}-form-item`,
+    formDescriptionId: `${id}-form-item-description`,
+    formMessageId: `${id}-form-item-message`,
+    ...fieldState,
+  }
+}
+
+type FormItemContextValue = {
+  id: string
+}
+
+const FormItemContext = React.createContext<FormItemContextValue>(
+  {} as FormItemContextValue
+)
+
+const FormItem = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => {
+  const id = React.useId()
+
+  return (
+    <FormItemContext.Provider value={{ id }}>
+      <div ref={ref} className={cn("space-y-2", className)} {...props} />
+    </FormItemContext.Provider>
+  )
+})
+FormItem.displayName = "FormItem"
+
+const FormLabel = React.forwardRef<
+  React.ElementRef<typeof LabelPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
+>(({ className, ...props }, ref) => {
+  const { error, formItemId } = useFormField()
+
+  return (
+    <Label
+      ref={ref}
+      className={cn(error && "text-destructive", className)}
+      htmlFor={formItemId}
+      {...props}
+    />
+  )
+})
+FormLabel.displayName = "FormLabel"
+
+const FormControl = React.forwardRef<
+  React.ElementRef<typeof Slot>,
+  React.ComponentPropsWithoutRef<typeof Slot>
+>(({ ...props }, ref) => {
+  const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
+
+  return (
+    <Slot
+      ref={ref}
+      id={formItemId}
+      aria-describedby={
+        !error
+          ? `${formDescriptionId}`
+          : `${formDescriptionId} ${formMessageId}`
+      }
+      aria-invalid={!!error}
+      {...props}
+    />
+  )
+})
+FormControl.displayName = "FormControl"
+
+const FormDescription = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => {
+  const { formDescriptionId } = useFormField()
+
+  return (
+    <p
+      ref={ref}
+      id={formDescriptionId}
+      className={cn("text-sm text-muted-foreground", className)}
+      {...props}
+    />
+  )
+})
+FormDescription.displayName = "FormDescription"
+
+const FormMessage = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, children, ...props }, ref) => {
+  const { error, formMessageId } = useFormField()
+  const body = error ? String(error?.message) : children
+
+  if (!body) {
+    return null
+  }
+
+  return (
+    <p
+      ref={ref}
+      id={formMessageId}
+      className={cn("text-sm font-medium text-destructive", className)}
+      {...props}
+    >
+      {body}
+    </p>
+  )
+})
+FormMessage.displayName = "FormMessage"
+
+export {
+  useFormField,
+  Form,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormDescription,
+  FormMessage,
+  FormField,
+}
+
+// .\src\components\ui\input.tsx
+--------------------------------------------
+import * as React from "react"
+
+import { cn } from "@/lib/utils"
+
+const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
+  ({ className, type, ...props }, ref) => {
+    return (
+      <input
+        type={type}
+        className={cn(
+          "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+          className
+        )}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Input.displayName = "Input"
+
+export { Input }
+
+// .\src\components\ui\label.tsx
+--------------------------------------------
+"use client"
+
+import * as React from "react"
+import * as LabelPrimitive from "@radix-ui/react-label"
+import { cva, type VariantProps } from "class-variance-authority"
+
+import { cn } from "@/lib/utils"
+
+const labelVariants = cva(
+  "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+)
+
+const Label = React.forwardRef<
+  React.ElementRef<typeof LabelPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> &
+    VariantProps<typeof labelVariants>
+>(({ className, ...props }, ref) => (
+  <LabelPrimitive.Root
+    ref={ref}
+    className={cn(labelVariants(), className)}
+    {...props}
+  />
+))
+Label.displayName = LabelPrimitive.Root.displayName
+
+export { Label }
+
+// .\src\components\ui\select.tsx
+--------------------------------------------
+"use client"
+
+import * as React from "react"
+import * as SelectPrimitive from "@radix-ui/react-select"
+import { Check, ChevronDown, ChevronUp } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+
+const Select = SelectPrimitive.Root
+
+const SelectGroup = SelectPrimitive.Group
+
+const SelectValue = SelectPrimitive.Value
+
+const SelectTrigger = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
+>(({ className, children, ...props }, ref) => (
+  <SelectPrimitive.Trigger
+    ref={ref}
+    className={cn(
+      "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+      className
+    )}
+    {...props}
+  >
+    {children}
+    <SelectPrimitive.Icon asChild>
+      <ChevronDown className="h-4 w-4 opacity-50" />
+    </SelectPrimitive.Icon>
+  </SelectPrimitive.Trigger>
+))
+SelectTrigger.displayName = SelectPrimitive.Trigger.displayName
+
+const SelectScrollUpButton = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.ScrollUpButton>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollUpButton>
+>(({ className, ...props }, ref) => (
+  <SelectPrimitive.ScrollUpButton
+    ref={ref}
+    className={cn(
+      "flex cursor-default items-center justify-center py-1",
+      className
+    )}
+    {...props}
+  >
+    <ChevronUp className="h-4 w-4" />
+  </SelectPrimitive.ScrollUpButton>
+))
+SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName
+
+const SelectScrollDownButton = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.ScrollDownButton>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollDownButton>
+>(({ className, ...props }, ref) => (
+  <SelectPrimitive.ScrollDownButton
+    ref={ref}
+    className={cn(
+      "flex cursor-default items-center justify-center py-1",
+      className
+    )}
+    {...props}
+  >
+    <ChevronDown className="h-4 w-4" />
+  </SelectPrimitive.ScrollDownButton>
+))
+SelectScrollDownButton.displayName =
+  SelectPrimitive.ScrollDownButton.displayName
+
+const SelectContent = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
+>(({ className, children, position = "popper", ...props }, ref) => (
+  <SelectPrimitive.Portal>
+    <SelectPrimitive.Content
+      ref={ref}
+      className={cn(
+        "relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        position === "popper" &&
+          "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
+        className
+      )}
+      position={position}
+      {...props}
+    >
+      <SelectScrollUpButton />
+      <SelectPrimitive.Viewport
+        className={cn(
+          "p-1",
+          position === "popper" &&
+            "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]"
+        )}
+      >
+        {children}
+      </SelectPrimitive.Viewport>
+      <SelectScrollDownButton />
+    </SelectPrimitive.Content>
+  </SelectPrimitive.Portal>
+))
+SelectContent.displayName = SelectPrimitive.Content.displayName
+
+const SelectLabel = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Label>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>
+>(({ className, ...props }, ref) => (
+  <SelectPrimitive.Label
+    ref={ref}
+    className={cn("py-1.5 pl-8 pr-2 text-sm font-semibold", className)}
+    {...props}
+  />
+))
+SelectLabel.displayName = SelectPrimitive.Label.displayName
+
+const SelectItem = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Item>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
+>(({ className, children, ...props }, ref) => (
+  <SelectPrimitive.Item
+    ref={ref}
+    className={cn(
+      "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      className
+    )}
+    {...props}
+  >
+    <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+      <SelectPrimitive.ItemIndicator>
+        <Check className="h-4 w-4" />
+      </SelectPrimitive.ItemIndicator>
+    </span>
+
+    <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+  </SelectPrimitive.Item>
+))
+SelectItem.displayName = SelectPrimitive.Item.displayName
+
+const SelectSeparator = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Separator>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Separator>
+>(({ className, ...props }, ref) => (
+  <SelectPrimitive.Separator
+    ref={ref}
+    className={cn("-mx-1 my-1 h-px bg-muted", className)}
+    {...props}
+  />
+))
+SelectSeparator.displayName = SelectPrimitive.Separator.displayName
+
+export {
+  Select,
+  SelectGroup,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+  SelectScrollUpButton,
+  SelectScrollDownButton,
+}
+
+// .\src\components\ui\separator.tsx
+--------------------------------------------
+"use client"
+
+import * as React from "react"
+import * as SeparatorPrimitive from "@radix-ui/react-separator"
+
+import { cn } from "@/lib/utils"
+
+const Separator = React.forwardRef<
+  React.ElementRef<typeof SeparatorPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof SeparatorPrimitive.Root>
+>(
+  (
+    { className, orientation = "horizontal", decorative = true, ...props },
+    ref
+  ) => (
+    <SeparatorPrimitive.Root
+      ref={ref}
+      decorative={decorative}
+      orientation={orientation}
+      className={cn(
+        "shrink-0 bg-border",
+        orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]",
+        className
+      )}
+      {...props}
+    />
+  )
+)
+Separator.displayName = SeparatorPrimitive.Root.displayName
+
+export { Separator }
+
+// .\src\components\ui\skeleton.tsx
+--------------------------------------------
+import { cn } from "@/lib/utils"
+
+function Skeleton({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={cn("animate-pulse rounded-md bg-muted", className)}
+      {...props}
+    />
+  )
+}
+
+export { Skeleton }
+
+// .\src\components\ui\switch.tsx
+--------------------------------------------
+"use client"
+
+import * as React from "react"
+import * as SwitchPrimitives from "@radix-ui/react-switch"
+
+import { cn } from "@/lib/utils"
+
+const Switch = React.forwardRef<
+  React.ElementRef<typeof SwitchPrimitives.Root>,
+  React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>
+>(({ className, ...props }, ref) => (
+  <SwitchPrimitives.Root
+    className={cn(
+      "peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input",
+      className
+    )}
+    {...props}
+    ref={ref}
+  >
+    <SwitchPrimitives.Thumb
+      className={cn(
+        "pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"
+      )}
+    />
+  </SwitchPrimitives.Root>
+))
+Switch.displayName = SwitchPrimitives.Root.displayName
+
+export { Switch }
+
+// .\src\components\ui\textarea.tsx
+--------------------------------------------
+import * as React from "react"
+
+import { cn } from "@/lib/utils"
+
+const Textarea = React.forwardRef<
+  HTMLTextAreaElement,
+  React.ComponentProps<"textarea">
+>(({ className, ...props }, ref) => {
+  return (
+    <textarea
+      className={cn(
+        "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+        className
+      )}
+      ref={ref}
+      {...props}
+    />
+  )
+})
+Textarea.displayName = "Textarea"
+
+export { Textarea }
+
+// .\src\components\ui\toast.tsx
+--------------------------------------------
+"use client"
+
+import * as React from "react"
+import * as ToastPrimitives from "@radix-ui/react-toast"
+import { cva, type VariantProps } from "class-variance-authority"
+import { X } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+
+const ToastProvider = ToastPrimitives.Provider
+
+const ToastViewport = React.forwardRef<
+  React.ElementRef<typeof ToastPrimitives.Viewport>,
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Viewport>
+>(({ className, ...props }, ref) => (
+  <ToastPrimitives.Viewport
+    ref={ref}
+    className={cn(
+      "fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]",
+      className
+    )}
+    {...props}
+  />
+))
+ToastViewport.displayName = ToastPrimitives.Viewport.displayName
+
+const toastVariants = cva(
+  "group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border p-6 pr-8 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full",
+  {
+    variants: {
+      variant: {
+        default: "border bg-background text-foreground",
+        destructive:
+          "destructive group border-destructive bg-destructive text-destructive-foreground",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+)
+
+const Toast = React.forwardRef<
+  React.ElementRef<typeof ToastPrimitives.Root>,
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> &
+    VariantProps<typeof toastVariants>
+>(({ className, variant, ...props }, ref) => {
+  return (
+    <ToastPrimitives.Root
+      ref={ref}
+      className={cn(toastVariants({ variant }), className)}
+      {...props}
+    />
+  )
+})
+Toast.displayName = ToastPrimitives.Root.displayName
+
+const ToastAction = React.forwardRef<
+  React.ElementRef<typeof ToastPrimitives.Action>,
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action>
+>(({ className, ...props }, ref) => (
+  <ToastPrimitives.Action
+    ref={ref}
+    className={cn(
+      "inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive",
+      className
+    )}
+    {...props}
+  />
+))
+ToastAction.displayName = ToastPrimitives.Action.displayName
+
+const ToastClose = React.forwardRef<
+  React.ElementRef<typeof ToastPrimitives.Close>,
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Close>
+>(({ className, ...props }, ref) => (
+  <ToastPrimitives.Close
+    ref={ref}
+    className={cn(
+      "absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600",
+      className
+    )}
+    toast-close=""
+    {...props}
+  >
+    <X className="h-4 w-4" />
+  </ToastPrimitives.Close>
+))
+ToastClose.displayName = ToastPrimitives.Close.displayName
+
+const ToastTitle = React.forwardRef<
+  React.ElementRef<typeof ToastPrimitives.Title>,
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Title>
+>(({ className, ...props }, ref) => (
+  <ToastPrimitives.Title
+    ref={ref}
+    className={cn("text-sm font-semibold", className)}
+    {...props}
+  />
+))
+ToastTitle.displayName = ToastPrimitives.Title.displayName
+
+const ToastDescription = React.forwardRef<
+  React.ElementRef<typeof ToastPrimitives.Description>,
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Description>
+>(({ className, ...props }, ref) => (
+  <ToastPrimitives.Description
+    ref={ref}
+    className={cn("text-sm opacity-90", className)}
+    {...props}
+  />
+))
+ToastDescription.displayName = ToastPrimitives.Description.displayName
+
+type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>
+
+type ToastActionElement = React.ReactElement<typeof ToastAction>
+
+export {
+  type ToastProps,
+  type ToastActionElement,
+  ToastProvider,
+  ToastViewport,
+  Toast,
+  ToastTitle,
+  ToastDescription,
+  ToastClose,
+  ToastAction,
+}
+
+// .\src\components\ui\toaster.tsx
+--------------------------------------------
+"use client"
+
+import { useToast } from "@/hooks/use-toast"
+import {
+  Toast,
+  ToastClose,
+  ToastDescription,
+  ToastProvider,
+  ToastTitle,
+  ToastViewport,
+} from "@/components/ui/toast"
+
+export function Toaster() {
+  const { toasts } = useToast()
+
+  return (
+    <ToastProvider>
+      {toasts.map(function ({ id, title, description, action, ...props }) {
+        return (
+          <Toast key={id} {...props}>
+            <div className="grid gap-1">
+              {title && <ToastTitle>{title}</ToastTitle>}
+              {description && (
+                <ToastDescription>{description}</ToastDescription>
+              )}
+            </div>
+            {action}
+            <ToastClose />
+          </Toast>
+        )
+      })}
+      <ToastViewport />
+    </ToastProvider>
+  )
+}
+
+// .\src\components\ui\tooltip.tsx
+--------------------------------------------
+"use client"
+
+import * as React from "react"
+import * as TooltipPrimitive from "@radix-ui/react-tooltip"
+
+import { cn } from "@/lib/utils"
+
+const TooltipProvider = TooltipPrimitive.Provider
+
+const Tooltip = TooltipPrimitive.Root
+
+const TooltipTrigger = TooltipPrimitive.Trigger
+
+const TooltipContent = React.forwardRef<
+  React.ElementRef<typeof TooltipPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
+>(({ className, sideOffset = 4, ...props }, ref) => (
+  <TooltipPrimitive.Content
+    ref={ref}
+    sideOffset={sideOffset}
+    className={cn(
+      "z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+      className
+    )}
+    {...props}
+  />
+))
+TooltipContent.displayName = TooltipPrimitive.Content.displayName
+
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }
+
+// .\src\context\LocaleContext.tsx
+--------------------------------------------
+// src/context/LocaleContext.tsx
+"use client"
+
+import { createContext, useContext, useState } from "react"
+import kk from "@/locales/kk"
+import en from "@/locales/en"
+import ru from "@/locales/ru"
+
+type Locale = "kk" | "en" | "ru"
+
+const allLocales = { kk, en, ru }
+
+interface LocaleContextProps {
+  locale: Locale
+  setLocale: (loc: Locale) => void
+  t: (path: string) => string
+}
+
+const LocaleContext = createContext<LocaleContextProps>({
+  locale: "ru",
+  setLocale: () => {},
+  t: () => ""
+})
+
+export function LocaleProvider({ children }: { children: React.ReactNode }) {
+  const [locale, setLocale] = useState<Locale>("ru") // по умолчанию "ru"
+
+  function t(path: string) {
+    // path может быть типа "common.create" или "chatbotForm.title"
+    const [section, key] = path.split(".")
+    // берем объект локализации
+    const dict = allLocales[locale] as any
+    if (!dict[section] || !dict[section][key]) {
+      return path // fallback
+    }
+    return dict[section][key]
+  }
+
+  return (
+    <LocaleContext.Provider value={{ locale, setLocale, t }}>
+      {children}
+    </LocaleContext.Provider>
+  )
+}
+
+export function useLocale() {
+  return useContext(LocaleContext)
+}
+
+// .\src\hooks\use-toast.ts
+--------------------------------------------
+"use client"
+
+// Inspired by react-hot-toast library
+import * as React from "react"
+
+import type {
+  ToastActionElement,
+  ToastProps,
+} from "@/components/ui/toast"
+
+const TOAST_LIMIT = 1
+const TOAST_REMOVE_DELAY = 1000000
+
+type ToasterToast = ToastProps & {
+  id: string
+  title?: React.ReactNode
+  description?: React.ReactNode
+  action?: ToastActionElement
+}
+
+const actionTypes = {
+  ADD_TOAST: "ADD_TOAST",
+  UPDATE_TOAST: "UPDATE_TOAST",
+  DISMISS_TOAST: "DISMISS_TOAST",
+  REMOVE_TOAST: "REMOVE_TOAST",
+} as const
+
+let count = 0
+
+function genId() {
+  count = (count + 1) % Number.MAX_SAFE_INTEGER
+  return count.toString()
+}
+
+type ActionType = typeof actionTypes
+
+type Action =
+  | {
+      type: ActionType["ADD_TOAST"]
+      toast: ToasterToast
+    }
+  | {
+      type: ActionType["UPDATE_TOAST"]
+      toast: Partial<ToasterToast>
+    }
+  | {
+      type: ActionType["DISMISS_TOAST"]
+      toastId?: ToasterToast["id"]
+    }
+  | {
+      type: ActionType["REMOVE_TOAST"]
+      toastId?: ToasterToast["id"]
+    }
+
+interface State {
+  toasts: ToasterToast[]
+}
+
+const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>()
+
+const addToRemoveQueue = (toastId: string) => {
+  if (toastTimeouts.has(toastId)) {
+    return
+  }
+
+  const timeout = setTimeout(() => {
+    toastTimeouts.delete(toastId)
+    dispatch({
+      type: "REMOVE_TOAST",
+      toastId: toastId,
+    })
+  }, TOAST_REMOVE_DELAY)
+
+  toastTimeouts.set(toastId, timeout)
+}
+
+export const reducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case "ADD_TOAST":
+      return {
+        ...state,
+        toasts: [action.toast, ...state.toasts].slice(0, TOAST_LIMIT),
+      }
+
+    case "UPDATE_TOAST":
+      return {
+        ...state,
+        toasts: state.toasts.map((t) =>
+          t.id === action.toast.id ? { ...t, ...action.toast } : t
+        ),
+      }
+
+    case "DISMISS_TOAST": {
+      const { toastId } = action
+
+      // ! Side effects ! - This could be extracted into a dismissToast() action,
+      // but I'll keep it here for simplicity
+      if (toastId) {
+        addToRemoveQueue(toastId)
+      } else {
+        state.toasts.forEach((toast) => {
+          addToRemoveQueue(toast.id)
+        })
+      }
+
+      return {
+        ...state,
+        toasts: state.toasts.map((t) =>
+          t.id === toastId || toastId === undefined
+            ? {
+                ...t,
+                open: false,
+              }
+            : t
+        ),
+      }
+    }
+    case "REMOVE_TOAST":
+      if (action.toastId === undefined) {
+        return {
+          ...state,
+          toasts: [],
+        }
+      }
+      return {
+        ...state,
+        toasts: state.toasts.filter((t) => t.id !== action.toastId),
+      }
+  }
+}
+
+const listeners: Array<(state: State) => void> = []
+
+let memoryState: State = { toasts: [] }
+
+function dispatch(action: Action) {
+  memoryState = reducer(memoryState, action)
+  listeners.forEach((listener) => {
+    listener(memoryState)
+  })
+}
+
+type Toast = Omit<ToasterToast, "id">
+
+function toast({ ...props }: Toast) {
+  const id = genId()
+
+  const update = (props: ToasterToast) =>
+    dispatch({
+      type: "UPDATE_TOAST",
+      toast: { ...props, id },
+    })
+  const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id })
+
+  dispatch({
+    type: "ADD_TOAST",
+    toast: {
+      ...props,
+      id,
+      open: true,
+      onOpenChange: (open) => {
+        if (!open) dismiss()
+      },
+    },
+  })
+
+  return {
+    id: id,
+    dismiss,
+    update,
+  }
+}
+
+function useToast() {
+  const [state, setState] = React.useState<State>(memoryState)
+
+  React.useEffect(() => {
+    listeners.push(setState)
+    return () => {
+      const index = listeners.indexOf(setState)
+      if (index > -1) {
+        listeners.splice(index, 1)
+      }
+    }
+  }, [state])
+
+  return {
+    ...state,
+    toast,
+    dismiss: (toastId?: string) => dispatch({ type: "DISMISS_TOAST", toastId }),
+  }
+}
+
+export { useToast, toast }
+
+// .\src\lib\awsLambda.ts
+--------------------------------------------
+// src/lib/awsLambda.ts
+import { LambdaClient, UpdateFunctionCodeCommand } from "@aws-sdk/client-lambda"
+
+const lambdaClient = new LambdaClient({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || ""
+  }
+})
+
+export async function updateLambda(data: any) {
+  // data может содержать, например, название Lambda, S3Bucket, S3Key
+  const functionName = process.env.AWS_LAMBDA_FUNCTION_NAME || ""
+  
+  const command = new UpdateFunctionCodeCommand({
+    FunctionName: functionName,
+    // Пример: код берётся из s3
+    S3Bucket: data.s3Bucket || "my-chatbot-bucket",
+    S3Key: data.s3Key || "chatbot_code.zip"
+    // Если нужно, можно указать S3ObjectVersion и т.д.
+  })
+  
+  const response = await lambdaClient.send(command)
+  return response
+}
+
+// .\src\lib\jwt.ts
+--------------------------------------------
+// src/lib/jwt.ts
+import { SignJWT, jwtVerify } from "jose"
+
+const SECRET = new TextEncoder().encode(process.env.JWT_SECRET || "")
+
+export async function signToken(payload: any) {
+  return await new SignJWT(payload)
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime("2h")
+    .sign(SECRET)
+}
+
+export async function verifyToken(token: string) {
+  try {
+    const { payload } = await jwtVerify(token, SECRET)
+    return payload
+  } catch {
+    return null
+  }
+}
+
+// .\src\lib\prisma.ts
+--------------------------------------------
+// src/lib/prisma.ts
+import { PrismaClient } from "@prisma/client"
+
+const globalForPrisma = global as unknown as { prisma: PrismaClient }
+
+export const prisma =
+  globalForPrisma.prisma ||
+  new PrismaClient({
+    log: ["query", "error", "warn"]
+  })
+
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma
+
+// .\src\lib\utils.ts
+--------------------------------------------
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
+// .\src\locales\en.ts
+--------------------------------------------
+// src/locales/en.ts
+export default {
+  common: {
+    create: "Create",
+    update: "Update",
+    delete: "Delete",
+    loading: "Loading...",
+    error: "Error",
+    success: "Success",
+  },
+  chatbotForm: {
+    title: "Add Chatbot",
+    nameLabel: "Chatbot Name",
+    businessLabel: "Attach to Business",
+    templateLabel: "Chatbot Template",
+    scheduleTitle: "Working Schedule",
+    paymentTitle: "Payment Methods",
+    deliveryTitle: "Delivery Options",
+    catalogTitle: "Catalog",
+    faqLabel: "Frequently Asked Questions (FAQ)",
+    googleCatalog: "Google Sheet",
+    posifloraCatalog: "Posiflora",
+    addDelivery: "Add Delivery Option",
+    createBot: "Create Chatbot",
+    workingDays: ["Mon", "Tue", "Wed", "Thu", "Fri"],
+    saturday: "Saturday",
+    sunday: "Sunday",
+  },
+  dashboard: {
+    activeBots: "Active Chatbots",
+    totalBots: "Total",
+    userBotsTitle: "Your Chatbots",
+    systemBotsTitle: "All Chatbots in System",
+    usersTitle: "Users",
+    dialogsMonth: "Dialogs this Month",
+    dialogsTotal: "All Dialogs",
+  },
+  // ...
+}
+
+// .\src\locales\kk.ts
+--------------------------------------------
+// src/locales/kk.ts
+export default {
+  common: {
+    create: "Жасау",
+    update: "Жаңарту",
+    delete: "Жою",
+    loading: "Жүктелуде...",
+    error: "Қате",
+    success: "Сәтті",
+  },
+  chatbotForm: {
+    title: "Чат-бот қосу",
+    nameLabel: "Чат-боттың атауы",
+    businessLabel: "Бизнеспен байланыстыру",
+    templateLabel: "Чат-бот шаблоны",
+    scheduleTitle: "Жұмыс кестесі",
+    paymentTitle: "Төлем әдістері",
+    deliveryTitle: "Жеткізу әдістері",
+    catalogTitle: "Тауарлар каталогу",
+    faqLabel: "Жиі қойылатын сұрақтар (FAQ)",
+    googleCatalog: "Google кестесі",
+    posifloraCatalog: "Posiflora",
+    addDelivery: "Жеткізу әдісін қосу",
+    createBot: "Чат-ботты жасау",
+    workingDays: ["Дс", "Сс", "Ср", "Бс", "Жм"],
+    saturday: "Сенбі",
+    sunday: "Жексенбі",
+  },
+  dashboard: {
+    activeBots: "Белсенді чат-боттар",
+    totalBots: "Барлығы",
+    userBotsTitle: "Сіздің чат-боттарыңыз",
+    systemBotsTitle: "Жүйедегі бар чат-боттар",
+    usersTitle: "Пайдаланушылар саны",
+    dialogsMonth: "Осы айдағы диалогтар",
+    dialogsTotal: "Барлық диалогтар",
+  },
+}
+
+// .\src\locales\ru.ts
+--------------------------------------------
+// src/locales/ru.ts
+export default {
+  common: {
+    create: "Создать",
+    update: "Обновить",
+    delete: "Удалить",
+    loading: "Загрузка...",
+    error: "Ошибка",
+    success: "Успешно",
+  },
+  chatbotForm: {
+    title: "Добавить чат-бот",
+    nameLabel: "Название чат-бота",
+    businessLabel: "Привязать к бизнесу",
+    templateLabel: "Шаблон чат-бота",
+    scheduleTitle: "Расписание работы",
+    paymentTitle: "Способы оплаты",
+    deliveryTitle: "Способы доставки",
+    catalogTitle: "Каталог товаров",
+    faqLabel: "Часто задаваемые вопросы (FAQ)",
+    googleCatalog: "Google таблица",
+    posifloraCatalog: "Posiflora",
+    addDelivery: "Добавить способ доставки",
+    createBot: "Создать чат-бот",
+    workingDays: ["Пн", "Вт", "Ср", "Чт", "Пт"],
+    saturday: "Суббота",
+    sunday: "Воскресенье",
+  },
+  dashboard: {
+    activeBots: "Активных чат-ботов",
+    totalBots: "Всего",
+    userBotsTitle: "Ваши чат-боты",
+    systemBotsTitle: "Все чат-боты в системе",
+    usersTitle: "Пользователи",
+    dialogsMonth: "Диалогов за месяц",
+    dialogsTotal: "Всего диалогов",
+  },
+  // Что ещё можно добавить
+}
+
+// .\src\prompts\universalPrompt.ts
+--------------------------------------------
+// src/prompts/universalPrompt.ts
+export const universalPrompt = `
+Привет! Я чат-бот для [BUSINESS_NAME]. Меня зовут [CHATBOT_NAME].
+Моя задача: [CHATBOT_TASK].
+Наши товары/услуги: [BUSINESS_SERVICES].
+Модули и их настройки: [CHATBOT_MODULES].
+Контактные данные: [BUSINESS_CONTACTS].
+
+Я говорю на [LANGUAGE] языке.
+`
+

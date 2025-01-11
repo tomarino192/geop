@@ -1,7 +1,6 @@
-// src/components/ChatbotForm.tsx
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -15,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
-import { MessageSquarePlus } from "lucide-react"
+import { MessageSquarePlus, Trash2, Plus } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { Separator } from "@/components/ui/separator"
 import { useLocale } from "@/context/LocaleContext"
@@ -35,50 +34,23 @@ export default function ChatbotForm({
   const [businessId, setBusinessId] = useState("")
   const [templateKey, setTemplateKey] = useState("T1")
   const [mlEnabled, setMlEnabled] = useState(false)
-  const [botWorkingDays, setBotWorkingDays] = useState<string[]>([])
-  const [botStartTime, setBotStartTime] = useState("09:00")
-  const [botEndTime, setBotEndTime] = useState("18:00")
-  const [botWorkSaturday, setBotWorkSaturday] = useState(false)
-  const [botStartTimeSat, setBotStartTimeSat] = useState("10:00")
-  const [botEndTimeSat, setBotEndTimeSat] = useState("16:00")
-  const [botWorkSunday, setBotWorkSunday] = useState(false)
-  const [botStartTimeSun, setBotStartTimeSun] = useState("10:00")
-  const [botEndTimeSun, setBotEndTimeSun] = useState("16:00")
+  const [selectedBusiness, setSelectedBusiness] = useState<any | null>(null)
+  const [customPaymentMethod, setCustomPaymentMethod] = useState("")
   const paymentOptions = ["Банковские карты", "Наличные", "Kaspi", "Halyk", "Freedom", "Forte"]
   const [paymentMethods, setPaymentMethods] = useState<string[]>([])
   const [deliveryOptions, setDeliveryOptions] = useState<{ name: string; price: string; time: string }[]>([])
   const [deliveryName, setDeliveryName] = useState("")
   const [deliveryPrice, setDeliveryPrice] = useState("")
   const [deliveryTime, setDeliveryTime] = useState("")
-  const [selectedBusiness, setSelectedBusiness] = useState<any | null>(null)
-  const workingDaysLabels = t("chatbotForm.workingDays") as unknown as string[]
 
-  useEffect(() => {
-    if (!businessId) {
-      setSelectedBusiness(null)
-      return
-    }
-    const token = localStorage.getItem("token")
-    fetch(`/api/business/${businessId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (!data.error) {
-          setSelectedBusiness(data)
-        } else {
-          setSelectedBusiness(null)
-        }
-      })
-      .catch(() => setSelectedBusiness(null))
-  }, [businessId])
+  const addPaymentMethod = () => {
+    if (!customPaymentMethod.trim()) return
+    setPaymentMethods(prev => [...prev, customPaymentMethod.trim()])
+    setCustomPaymentMethod("")
+  }
 
-  const toggleBotDay = (day: string) => {
-    setBotWorkingDays((prev) =>
-      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
-    )
+  const removePaymentMethod = (method: string) => {
+    setPaymentMethods(prev => prev.filter(m => m !== method))
   }
 
   const addDelivery = () => {
@@ -101,6 +73,10 @@ export default function ChatbotForm({
     setDeliveryName("")
     setDeliveryPrice("")
     setDeliveryTime("")
+  }
+
+  const removeDelivery = (index: number) => {
+    setDeliveryOptions(prev => prev.filter((_, idx) => idx !== index))
   }
 
   const onCreate = async () => {
@@ -126,15 +102,6 @@ export default function ChatbotForm({
           businessId: businessId.trim(),
           templateKey,
           mlEnabled,
-          botWorkingDays,
-          botStartTime,
-          botEndTime,
-          botWorkSaturday,
-          botStartTimeSat,
-          botEndTimeSat,
-          botWorkSunday,
-          botStartTimeSun,
-          botEndTimeSun,
           paymentMethods,
           deliveryOptions
         })
@@ -193,22 +160,6 @@ export default function ChatbotForm({
                 ))}
               </SelectContent>
             </Select>
-            {selectedBusiness && (
-              <div className="mt-2 p-2 border rounded bg-gray-50 text-sm">
-                <p className="font-medium mb-1">Часы работы выбранного бизнеса:</p>
-                <p>Будни: {selectedBusiness.workingDays?.join(", ") || "—"} ({selectedBusiness.startTime}—{selectedBusiness.endTime})</p>
-                {selectedBusiness.workSaturday && (
-                  <p>
-                    Суббота: {selectedBusiness.startTimeSat}—{selectedBusiness.endTimeSat}
-                  </p>
-                )}
-                {selectedBusiness.workSunday && (
-                  <p>
-                    Воскресенье: {selectedBusiness.startTimeSun}—{selectedBusiness.endTimeSun}
-                  </p>
-                )}
-              </div>
-            )}
           </div>
           <div className="space-y-2">
             <Label>{t("chatbotForm.templateLabel")}</Label>
@@ -233,96 +184,6 @@ export default function ChatbotForm({
         </div>
         <Separator />
         <div className="space-y-4">
-          <Label className="text-base">Часы работы чат-бота</Label>
-          <div className="grid grid-cols-5 gap-4">
-            {workingDaysLabels?.map((day) => (
-              <div key={day} className="flex items-center space-x-2">
-                <Checkbox
-                  id={day}
-                  checked={botWorkingDays.includes(day)}
-                  onCheckedChange={() => toggleBotDay(day)}
-                />
-                <Label htmlFor={day}>{day}</Label>
-              </div>
-            ))}
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label>Начало (будни)</Label>
-              <Input
-                type="time"
-                value={botStartTime}
-                onChange={(e) => setBotStartTime(e.target.value)}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>Конец (будни)</Label>
-              <Input
-                type="time"
-                value={botEndTime}
-                onChange={(e) => setBotEndTime(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="flex items-center space-x-2 mt-4">
-            <Switch
-              id="botWorkSaturday"
-              checked={botWorkSaturday}
-              onCheckedChange={setBotWorkSaturday}
-            />
-            <Label htmlFor="botWorkSaturday">Суббота</Label>
-          </div>
-          {botWorkSaturday && (
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Начало (Сб)</Label>
-                <Input
-                  type="time"
-                  value={botStartTimeSat}
-                  onChange={(e) => setBotStartTimeSat(e.target.value)}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Конец (Сб)</Label>
-                <Input
-                  type="time"
-                  value={botEndTimeSat}
-                  onChange={(e) => setBotEndTimeSat(e.target.value)}
-                />
-              </div>
-            </div>
-          )}
-          <div className="flex items-center space-x-2 mt-4">
-            <Switch
-              id="botWorkSunday"
-              checked={botWorkSunday}
-              onCheckedChange={setBotWorkSunday}
-            />
-            <Label htmlFor="botWorkSunday">Воскресенье</Label>
-          </div>
-          {botWorkSunday && (
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Начало (Вс)</Label>
-                <Input
-                  type="time"
-                  value={botStartTimeSun}
-                  onChange={(e) => setBotStartTimeSun(e.target.value)}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Конец (Вс)</Label>
-                <Input
-                  type="time"
-                  value={botEndTimeSun}
-                  onChange={(e) => setBotEndTimeSun(e.target.value)}
-                />
-              </div>
-            </div>
-          )}
-        </div>
-        <Separator />
-        <div className="space-y-4">
           <Label className="text-base">{t("chatbotForm.paymentTitle")}</Label>
           <div className="grid grid-cols-2 gap-4">
             {paymentOptions.map((method) => (
@@ -331,8 +192,8 @@ export default function ChatbotForm({
                   id={method}
                   checked={paymentMethods.includes(method)}
                   onCheckedChange={(checked) => {
-                    setPaymentMethods((prev) =>
-                      checked ? [...prev, method] : prev.filter((m) => m !== method)
+                    setPaymentMethods(prev =>
+                      checked ? [...prev, method] : prev.filter(m => m !== method)
                     )
                   }}
                 />
@@ -340,6 +201,36 @@ export default function ChatbotForm({
               </div>
             ))}
           </div>
+          <div className="flex items-center space-x-2">
+            <Input
+              value={customPaymentMethod}
+              onChange={(e) => setCustomPaymentMethod(e.target.value)}
+              placeholder="Добавить свой способ оплаты"
+              className="flex-1"
+            />
+            <Button onClick={addPaymentMethod} variant="outline" size="icon">
+              <Plus className="h-4 w-4" />
+            </Button>
+          </div>
+          {paymentMethods.filter(method => !paymentOptions.includes(method)).length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {paymentMethods
+                .filter(method => !paymentOptions.includes(method))
+                .map((method) => (
+                  <div key={method} className="flex items-center space-x-1 bg-secondary rounded-md px-2 py-1">
+                    <span className="text-sm">{method}</span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-4 w-4"
+                      onClick={() => removePaymentMethod(method)}
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
+                ))}
+            </div>
+          )}
         </div>
         <Separator />
         <div className="space-y-4">
@@ -369,9 +260,18 @@ export default function ChatbotForm({
               {deliveryOptions.map((opt, idx) => (
                 <div key={idx} className="flex justify-between items-center">
                   <span>{opt.name}</span>
-                  <span className="text-muted-foreground">
-                    {opt.price} • {opt.time}
-                  </span>
+                  <div className="flex items-center space-x-4">
+                    <span className="text-muted-foreground">
+                      {opt.price} • {opt.time}
+                    </span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => removeDelivery(idx)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
               ))}
             </div>

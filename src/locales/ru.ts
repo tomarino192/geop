@@ -25,6 +25,7 @@ export default {
     workingDays: ["Пн", "Вт", "Ср", "Чт", "Пт"],
     saturday: "Суббота",
     sunday: "Воскресенье",
+    you: "Вы",
   },
   dashboard: {
     activeBots: "Активных чат-ботов",

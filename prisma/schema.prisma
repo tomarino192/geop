@@ -1,15 +1,14 @@
-// prisma/schema.prisma
-datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
-}
-
 generator client {
   provider = "prisma-client-js"
 }
 
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
 model User {
-  id                  String     @id @default(auto()) @map("_id") @db.ObjectId
+  id                  String     @id @default(uuid())
   email               String     @unique
   password            String
   role                String     @default("GUEST")
@@ -21,13 +20,11 @@ model User {
 }
 
 model Business {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  id            String    @id @default(uuid())
   name          String
-  ownerId       String   @db.ObjectId
-  owner         User     @relation(fields: [ownerId], references: [id])
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  chatbots      Chatbot[]
+  ownerId       String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
   type          String?
   catalogType   String?
   catalogLink   String?
@@ -38,56 +35,57 @@ model Business {
   geo           String?
   style         String?
   targetAction  String?
-  workingDays   String[] // массив будних дней
-  startTime     String?  // "09:00"
-  endTime       String?  // "18:00"
-  workSaturday  Boolean? @default(false)
+  workingDays   String[]
+  startTime     String?
+  endTime       String?
+  workSaturday  Boolean?  @default(false)
   startTimeSat  String?
   endTimeSat    String?
-  workSunday    Boolean? @default(false)
+  workSunday    Boolean?  @default(false)
   startTimeSun  String?
   endTimeSun    String?
+  owner         User      @relation(fields: [ownerId], references: [id])
+  chatbots      Chatbot[]
 }
 
 model Chatbot {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
-  name             String
-  businessId       String   @db.ObjectId
-  business         Business @relation(fields: [businessId], references: [id])
-  moduleIds        String[] @db.ObjectId
-  modules          Module[] @relation("ChatbotModules", fields: [moduleIds], references: [id])
-  mlEnabled        Boolean? @default(false)
-  paymentMethods   String[]
-  deliveryOptions  String[]
-  templateKey      String?
-  botWorkingDays   String[]
-  botStartTime     String?
-  botEndTime       String?
-  botWorkSaturday  Boolean? @default(false)
-  botStartTimeSat  String?
-  botEndTimeSat    String?
-  botWorkSunday    Boolean? @default(false)
-  botStartTimeSun  String?
-  botEndTimeSun    String?
+  id              String   @id @default(uuid())
+  name            String
+  businessId      String
+  moduleIds       String[]
+  mlEnabled       Boolean? @default(false)
+  paymentMethods  String[]
+  templateKey     String?
+  botWorkingDays  String[]
+  botStartTime    String?
+  botEndTime      String?
+  botWorkSaturday Boolean? @default(false)
+  botStartTimeSat String?
+  botEndTimeSat   String?
+  botWorkSunday   Boolean? @default(false)
+  botStartTimeSun String?
+  botEndTimeSun   String?
+  deliveryOptions Json[]
+  business        Business @relation(fields: [businessId], references: [id])
+  modules         Module[] @relation("ChatbotModules")
 }
 
-
 model Log {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String?  @db.ObjectId
-  user      User?    @relation(fields: [userId], references: [id])
+  id        String   @id @default(uuid())
+  userId    String?
   action    String
   status    String
   timestamp DateTime @default(now())
   details   String?
+  user      User?    @relation(fields: [userId], references: [id])
 }
 
 model Module {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  id         String    @id @default(uuid())
   name       String
   config     Json
-  chatbotIds String[]  @db.ObjectId
-  chatbots   Chatbot[] @relation("ChatbotModules", fields: [chatbotIds], references: [id])
+  chatbotIds String[]
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
+  chatbots   Chatbot[] @relation("ChatbotModules")
 }
